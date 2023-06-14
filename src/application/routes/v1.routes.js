@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express.Router();
 
-const barangCtrl = require('../controller/post');
+const BarangCtrl = require('../controller/BarangController') 
 
 //post
-app.get('/posts', barangCtrl.getPosts);
-app.get('/posts/:id', barangCtrl.getOnePost);
-app.post('/posts', barangCtrl.addPosts);
-app.put('/posts/:id', barangCtrl.updateOne);
-app.delete('/posts/:id', barangCtrl.deleteOne);
+app.get('/barang', BarangCtrl.getAllBarang);
+app.get('/barang/:id', BarangCtrl.getOneBarang);
+app.post('/barang', BarangCtrl.addBarang);
+app.put('/barang/:id', BarangCtrl.updateOneBarang);
+app.delete('/barang/:id', BarangCtrl.deleteOneBarang);
 
-module.exports = app;
+module.exports =  app;

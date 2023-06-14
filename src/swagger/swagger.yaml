@@ -1,0 +1,217 @@
+swagger: "2.0"
+info:
+  title: Sample API
+  description: API description in Markdown.
+  version: 1.0.0
+
+host: localhost:3000
+basePath: /api/v1
+schemes:
+  - http
+
+paths:
+  /mahasiswa:
+    get:
+      summary: Returns a list of Mahasiswa.
+      description: |
+        Returns data of Mahasiswa
+      tags:
+        - "Mahasiswa"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Mahasiswa.
+      description: Create new Mahasiswa and return the created data
+      tags:
+        - "Mahasiswa"
+      parameters:
+        - name: create Mahasiswa
+          in: body
+          required: true
+          description: Create Mahasiswa with body request
+          schema:
+            type: object
+            properties:
+              nama:
+                type: string
+              nim:
+                type: number
+              kelas:
+                type: string
+              jenisKelamin:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /mahasiswa/{id}:
+    get:
+      summary: Returns one of Mahasiswa.
+      description: |
+        Returns one Mahasiswa
+      tags:
+        - "Mahasiswa"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Mahasiswa.
+      description: |
+        Update one Mahasiswa
+      tags:
+        - "Mahasiswa"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Mahasiswa
+          in: body
+          required: true
+          description: Update Mahasiswa with body request
+          schema:
+            type: object
+            properties:
+              nama:
+                type: string
+              nim:
+                type: number
+              kelas:
+                type: string
+              jenisKelamin:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Mahasiswa.
+      description: |
+        Delete one Mahasiswa
+      tags:
+        - "Mahasiswa"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+
+  /mata_kuliah:
+    get:
+      summary: Returns a list of Mata Kuliah.
+      description: |
+        Returns data of Mata Kuliah
+      tags:
+        - "Mata Kuliah"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Mata Kuliah.
+      description: Create new Mata Kuliah and return the created data
+      tags:
+        - "Mata Kuliah"
+      parameters:
+        - name: create Mata Kuliah
+          in: body
+          required: true
+          description: Create Mata Kuliah with body request
+          schema:
+            type: object
+            properties:
+              kode:
+                type: string
+              nama:
+                type: string
+              sks:
+                type: number
+              kelas:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /mata_kuliah/{id}:
+    get:
+      summary: Returns one of Mata Kuliah.
+      description: |
+        Returns one Mata Kuliah
+      tags:
+        - "Mata Kuliah"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Mata Kuliah.
+      description: |
+        Update one Mata Kuliah
+      tags:
+        - "Mata Kuliah"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Mata Kuliah
+          in: body
+          required: true
+          description: Update Mata Kuliah with body request
+          schema:
+            type: object
+            properties:
+              kode:
+                type: string
+              nama:
+                type: string
+              sks:
+                type: number
+              kelas:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Mata Kuliah.
+      description: |
+        Delete one Mata Kuliah
+      tags:
+        - "Mata Kuliah"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
