@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-  namaKategori: String,
+  namaKategori: {
+    type: String,
+    required: true,
+    unique: true
+  },
   createdAt: Date,
   updatedAt: Date,
 });

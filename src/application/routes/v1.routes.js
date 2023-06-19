@@ -4,6 +4,7 @@ const app = express.Router();
 const karyawanCtrl = require('../controller/karyawan');
 const kategoriCtrl = require('../controller/kategori');
 const postCtrl = require('../controller/post');
+const barangCtrl = require('../controller/barang');
 const authCtrl = require('../controller/auth');
 const auth = require('../middleware/auth');
 
@@ -30,6 +31,13 @@ app.get('/kategori/:id', auth, kategoriCtrl.getOneKategori);
 app.post('/kategori', auth,  kategoriCtrl.addKategori);
 app.put('/kategori/:id', auth,  kategoriCtrl.updateOneKategori);
 app.delete('/kategori/:id', auth,  kategoriCtrl.deleteOneKategori);
+
+//barang
+app.get('/barang',auth, barangCtrl.getAllBarang);
+app.get('/barang/:id', auth, barangCtrl.getOneBarang);
+app.post('/barang', auth,  barangCtrl.addBarang);
+app.put('/barang/:id', auth,  barangCtrl.updateOneBarang);
+app.delete('/barang/:id', auth,  barangCtrl.deleteOneBarang);
 
 //post
 app.get('/posts', postCtrl.getPosts);
