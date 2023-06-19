@@ -4,9 +4,6 @@ const schema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
-  gender: String,
-}, {
-  collection: 'users'
 });
 
-module.exports = mongoose.model('User', schema);
+module.exports = mongoose.model('users', schema);

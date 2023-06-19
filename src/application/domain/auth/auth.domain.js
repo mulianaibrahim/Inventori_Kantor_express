@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const User = require('../../database/users');
+const User = require('../../../model/users');
 
 const secret = 'very-secret';
 
@@ -9,8 +9,7 @@ async function register(body) {
         username,
         password,
         password_confirm,
-        name,
-        gender
+        name
     } = body;
     if (password !== password_confirm) {
         return {
@@ -22,7 +21,6 @@ async function register(body) {
         username,
         password: hashPassword(password),
         name,
-        gender,
     });
     await user.save();
     return {
@@ -30,7 +28,6 @@ async function register(body) {
         data: {
             username,
             name,
-            gender,
         },
     };
 };

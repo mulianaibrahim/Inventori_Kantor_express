@@ -9,12 +9,71 @@ basePath: /api/v1
 schemes:
   - http
   - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: |
+      authentication types for bearer header
 paths:
+  /register:
+    post:
+      summary: Register path.
+      description: API for user register
+      tags:
+        - "Auth"
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          description: User credentials
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              password_confirm:
+                type: string
+              name:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /login:
+    post:
+      summary: Login path.
+      description: Path for get user credentials
+      tags:
+        - "Auth"
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          description: User credentials
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
   /kategori:
     get:
       summary: Returns a list of Kategori.
       description: |
         Returns data of Kategori
+      security:
+        - Bearer: []
       tags:
         - "Kategori"
       produces:
@@ -25,6 +84,8 @@ paths:
     post:
       summary: Create new Kategori.
       description: Create new Kategori and return the created data on uppercase
+      security:
+        - Bearer: []
       tags:
         - "Kategori"
       parameters:
@@ -47,6 +108,8 @@ paths:
       summary: Returns one of Kategori.
       description: |
         Returns one Kategori
+      security:
+        - Bearer: []
       tags:
         - "Kategori"
       parameters:
@@ -63,6 +126,8 @@ paths:
       summary: Update one of Kategori.
       description: |
         Update one Kategori
+      security:
+        - Bearer: []
       tags:
         - "Kategori"
       parameters:
@@ -88,6 +153,8 @@ paths:
       summary: Delete one of Kategori.
       description: |
         Delete one Kategori
+      security:
+        - Bearer: []
       tags:
         - "Kategori"
       parameters:
@@ -105,6 +172,8 @@ paths:
       summary: Returns a list of Karyawan.
       description: |
         Returns data of Karyawan
+      security:
+        - Bearer: []
       tags:
         - "Karyawan"
       produces:
@@ -137,6 +206,8 @@ paths:
       summary: Returns one of Karyawan.
       description: |
         Returns one Karyawan
+      security:
+        - Bearer: []
       tags:
         - "Karyawan"
       parameters:
@@ -153,6 +224,8 @@ paths:
       summary: Update one of Karyawan.
       description: |
         Update one Karyawan
+      security:
+        - Bearer: []
       tags:
         - "Karyawan"
       parameters:
@@ -178,6 +251,8 @@ paths:
       summary: Delete one of Karyawan.
       description: |
         Delete one Karyawan
+      security:
+        - Bearer: []
       tags:
         - "Karyawan"
       parameters:

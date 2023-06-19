@@ -16,7 +16,8 @@ function auth(req, res, next) {
   } catch (error) {
     res.status(401).send({
       message: 'token salah'
-    })
+    });
+    return;
   }
 }
 
