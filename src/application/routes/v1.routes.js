@@ -11,7 +11,12 @@ app.get('/', function (req, res) {
   res.send({ message: 'hello dari route v1' });
 });
 
-
+//karyawan
+app.get('/karyawan', karyawanCtrl.getAllKaryawan);
+app.get('/karyawan/:id', karyawanCtrl.getOneKaryawan);
+app.post('/karyawan', karyawanCtrl.addKaryawan);
+app.put('/karyawan/:id', karyawanCtrl.updateOneKaryawan);
+app.delete('/karyawan/:id', karyawanCtrl.deleteOneKaryawan);
 
 //kategori
 app.get('/kategori', kategoriCtrl.getAllKategori);
