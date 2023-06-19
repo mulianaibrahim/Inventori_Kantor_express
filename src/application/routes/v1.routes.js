@@ -3,7 +3,6 @@ const app = express.Router();
 
 const karyawanCtrl = require('../controller/karyawan');
 const kategoriCtrl = require('../controller/kategori');
-const postCtrl = require('../controller/post');
 const barangCtrl = require('../controller/barang');
 const authCtrl = require('../controller/auth');
 const auth = require('../middleware/auth');
@@ -38,12 +37,5 @@ app.get('/barang/:id', auth, barangCtrl.getOneBarang);
 app.post('/barang', auth,  barangCtrl.addBarang);
 app.put('/barang/:id', auth,  barangCtrl.updateOneBarang);
 app.delete('/barang/:id', auth,  barangCtrl.deleteOneBarang);
-
-//post
-app.get('/posts', postCtrl.getPosts);
-app.get('/posts/:id', postCtrl.getOnePost);
-app.post('/posts', postCtrl.addPosts);
-app.put('/posts/:id', postCtrl.updateOne);
-app.delete('/posts/:id', postCtrl.deleteOne);
 
 module.exports = app;
