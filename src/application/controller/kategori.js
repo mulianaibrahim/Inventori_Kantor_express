@@ -16,18 +16,18 @@ async function getOneKategori(req, res) {
     res.status(response.status).send(response);
 }
 async function addKategori(req, res) {
-    const kategoriData = {
+    const dataKategori = {
         namaKategori: req.body.namaKategori.toUpperCase(),
     };
-    const response = await createKategori(kategoriData);
+    const response = await createKategori(dataKategori);
     res.status(response.status).send(response);
 }
 async function updateOneKategori(req, res) {
     const id = req.params.id;
-    const kategoriData = {
+    const dataKategori = {
         namaKategori: req.body.namaKategori.toUpperCase(),
     };
-    const response = await updateKategori(id, kategoriData);
+    const response = await updateKategori(id, dataKategori);
     res.status(response.status).send(response);
 }
 async function deleteOneKategori(req, res) {

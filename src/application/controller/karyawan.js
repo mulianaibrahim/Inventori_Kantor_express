@@ -16,18 +16,18 @@ async function getOneKaryawan(req, res) {
     res.status(response.status).send(response);
 }
 async function addKaryawan(req, res) {
-    const karyawanData = {
+    const dataKaryawan = {
         namaKaryawan: req.body.namaKaryawan.toUpperCase(),
     };
-    const response = await createKaryawan(karyawanData);
+    const response = await createKaryawan(dataKaryawan);
     res.status(response.status).send(response);
 }
 async function updateOneKaryawan(req, res) {
     const id = req.params.id;
-    const karyawanData = {
+    const dataKaryawan = {
         namaKaryawan: req.body.namaKaryawan.toUpperCase(),
     };
-    const response = await updateKaryawan(id, karyawanData);
+    const response = await updateKaryawan(id, dataKaryawan);
     res.status(response.status).send(response);
 }
 async function deleteOneKaryawan(req, res) {

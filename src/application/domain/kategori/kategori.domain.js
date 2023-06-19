@@ -126,4 +126,5 @@ module.exports = {
     createKategori,
     updateKategori,
     deleteKategori,
+    searchKategori
 };
