@@ -4,6 +4,7 @@ const app = express.Router();
 const karyawanCtrl = require('../controller/karyawan');
 const kategoriCtrl = require('../controller/kategori');
 const postCtrl = require('../controller/post');
+const authCtrl = require('../controller/auth');
 const auth = require('../middleware/auth');
 
 
@@ -11,19 +12,24 @@ app.get('/', function (req, res) {
   res.send({ message: 'hello dari route v1' });
 });
 
+//login
+app.post('/login', authCtrl.userLogin);
+//register
+app.post('/register', authCtrl.userRegister);
+
 //karyawan
-app.get('/karyawan', karyawanCtrl.getAllKaryawan);
-app.get('/karyawan/:id', karyawanCtrl.getOneKaryawan);
-app.post('/karyawan', karyawanCtrl.addKaryawan);
-app.put('/karyawan/:id', karyawanCtrl.updateOneKaryawan);
-app.delete('/karyawan/:id', karyawanCtrl.deleteOneKaryawan);
+app.get('/karyawan', auth, karyawanCtrl.getAllKaryawan);
+app.get('/karyawan/:id', auth, karyawanCtrl.getOneKaryawan);
+app.post('/karyawan', auth, karyawanCtrl.addKaryawan);
+app.put('/karyawan/:id', auth, karyawanCtrl.updateOneKaryawan);
+app.delete('/karyawan/:id', auth,  karyawanCtrl.deleteOneKaryawan);
 
 //kategori
-app.get('/kategori', kategoriCtrl.getAllKategori);
-app.get('/kategori/:id', kategoriCtrl.getOneKategori);
-app.post('/kategori', kategoriCtrl.addKategori);
-app.put('/kategori/:id', kategoriCtrl.updateOneKategori);
-app.delete('/kategori/:id', kategoriCtrl.deleteOneKategori);
+app.get('/kategori',auth, kategoriCtrl.getAllKategori);
+app.get('/kategori/:id', auth, kategoriCtrl.getOneKategori);
+app.post('/kategori', auth,  kategoriCtrl.addKategori);
+app.put('/kategori/:id', auth,  kategoriCtrl.updateOneKategori);
+app.delete('/kategori/:id', auth,  kategoriCtrl.deleteOneKategori);
 
 //post
 app.get('/posts', postCtrl.getPosts);
