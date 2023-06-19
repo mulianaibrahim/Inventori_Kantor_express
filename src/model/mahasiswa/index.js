@@ -7,4 +7,4 @@ const schema = new mongoose.Schema({
     jenisKelamin: String,
 });
 
-module.exports = mongoose.model('barangs', schema)
+module.exports = mongoose.model('mahasiswas', schema)

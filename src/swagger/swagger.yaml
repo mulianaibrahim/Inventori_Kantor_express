@@ -8,53 +8,47 @@ host: localhost:3000
 basePath: /api/v1
 schemes:
   - http
-
+  - https
 paths:
-  /mahasiswa:
+  /kategori:
     get:
-      summary: Returns a list of Mahasiswa.
+      summary: Returns a list of Kategori.
       description: |
-        Returns data of Mahasiswa
+        Returns data of Kategori
       tags:
-        - "Mahasiswa"
+        - "Kategori"
       produces:
         - application/json
       responses:
         200:
           description: OK
     post:
-      summary: Create new Mahasiswa.
-      description: Create new Mahasiswa and return the created data
+      summary: Create new Kategori.
+      description: Create new Kategori and return the created data on uppercase
       tags:
-        - "Mahasiswa"
+        - "Kategori"
       parameters:
-        - name: create Mahasiswa
+        - name: create Kategori
           in: body
           required: true
-          description: Create Mahasiswa with body request
+          description: Create Kategori body request
           schema:
             type: object
             properties:
-              nama:
-                type: string
-              nim:
-                type: number
-              kelas:
-                type: string
-              jenisKelamin:
+              namaKategori:
                 type: string
       produces:
         - application/json
       responses:
         200:
           description: OK
-  /mahasiswa/{id}:
+  /kategori/{id}:
     get:
-      summary: Returns one of Mahasiswa.
+      summary: Returns one of Kategori.
       description: |
-        Returns one Mahasiswa
+        Returns one Kategori
       tags:
-        - "Mahasiswa"
+        - "Kategori"
       parameters:
         - in: path
           name: id
@@ -66,30 +60,24 @@ paths:
         200:
           description: OK
     put:
-      summary: Update one of Mahasiswa.
+      summary: Update one of Kategori.
       description: |
-        Update one Mahasiswa
+        Update one Kategori
       tags:
-        - "Mahasiswa"
+        - "Kategori"
       parameters:
         - in: path
           name: id
           type: string
           required: true
-        - name: update Mahasiswa
+        - name: update Kategori
           in: body
           required: true
-          description: Update Mahasiswa with body request
+          description: Update Kategori body request
           schema:
             type: object
             properties:
-              nama:
-                type: string
-              nim:
-                type: number
-              kelas:
-                type: string
-              jenisKelamin:
+              namaKategori:
                 type: string
       produces:
         - application/json
@@ -97,11 +85,11 @@ paths:
         200:
           description: OK
     delete:
-      summary: Delete one of Mahasiswa.
+      summary: Delete one of Kategori.
       description: |
-        Delete one Mahasiswa
+        Delete one Kategori
       tags:
-        - "Mahasiswa"
+        - "Kategori"
       parameters:
         - in: path
           name: id
@@ -112,52 +100,45 @@ paths:
       responses:
         200:
           description: OK
-
-  /mata_kuliah:
+  /karyawan:
     get:
-      summary: Returns a list of Mata Kuliah.
+      summary: Returns a list of Karyawan.
       description: |
-        Returns data of Mata Kuliah
+        Returns data of Karyawan
       tags:
-        - "Mata Kuliah"
+        - "Karyawan"
       produces:
         - application/json
       responses:
         200:
           description: OK
     post:
-      summary: Create new Mata Kuliah.
-      description: Create new Mata Kuliah and return the created data
+      summary: Create new Karyawan.
+      description: Create new Karyawan and return the created data on uppercase
       tags:
-        - "Mata Kuliah"
+        - "Karyawan"
       parameters:
-        - name: create Mata Kuliah
+        - name: create Karyawan
           in: body
           required: true
-          description: Create Mata Kuliah with body request
+          description: Create Karyawan body request
           schema:
             type: object
             properties:
-              kode:
-                type: string
-              nama:
-                type: string
-              sks:
-                type: number
-              kelas:
+              namaKaryawan:
                 type: string
       produces:
         - application/json
       responses:
         200:
           description: OK
-  /mata_kuliah/{id}:
+  /karyawan/{id}:
     get:
-      summary: Returns one of Mata Kuliah.
+      summary: Returns one of Karyawan.
       description: |
-        Returns one Mata Kuliah
+        Returns one Karyawan
       tags:
-        - "Mata Kuliah"
+        - "Karyawan"
       parameters:
         - in: path
           name: id
@@ -169,30 +150,24 @@ paths:
         200:
           description: OK
     put:
-      summary: Update one of Mata Kuliah.
+      summary: Update one of Karyawan.
       description: |
-        Update one Mata Kuliah
+        Update one Karyawan
       tags:
-        - "Mata Kuliah"
+        - "Karyawan"
       parameters:
         - in: path
           name: id
           type: string
           required: true
-        - name: update Mata Kuliah
+        - name: update Karyawan
           in: body
           required: true
-          description: Update Mata Kuliah with body request
+          description: Update Karyawan body request
           schema:
             type: object
             properties:
-              kode:
-                type: string
-              nama:
-                type: string
-              sks:
-                type: number
-              kelas:
+              namaKaryawan:
                 type: string
       produces:
         - application/json
@@ -200,11 +175,11 @@ paths:
         200:
           description: OK
     delete:
-      summary: Delete one of Mata Kuliah.
+      summary: Delete one of Karyawan.
       description: |
-        Delete one Mata Kuliah
+        Delete one Karyawan
       tags:
-        - "Mata Kuliah"
+        - "Karyawan"
       parameters:
         - in: path
           name: id
