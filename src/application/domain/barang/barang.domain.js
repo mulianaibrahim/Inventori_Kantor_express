@@ -21,7 +21,7 @@ async function searchBarang(namaBarang) {
     } catch (error) {
         return {
             status: 404,
-            message: 'Data kategori tidak ada!',
+            message: 'Data barang tidak ada!',
         }
     }
 }
