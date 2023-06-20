@@ -1,0 +1,494 @@
+swagger: "2.0"
+info:
+  title: Sample API
+  description: API description in Markdown.
+  version: 1.0.0
+
+host: localhost:3000
+basePath: /api/v1
+schemes:
+  - http
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: |
+      authentication types for bearer header
+paths:
+  /register:
+    post:
+      summary: Register path.
+      description: API for user register
+      tags:
+        - "Auth"
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          description: User credentials
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              password_confirm:
+                type: string
+              name:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /login:
+    post:
+      summary: Login path.
+      description: Path for get user credentials
+      tags:
+        - "Auth"
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          description: User credentials
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /kategori:
+    get:
+      summary: Returns a list of Kategori.
+      description: |
+        Returns data of Kategori
+      security:
+        - Bearer: []
+      tags:
+        - "Kategori"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Kategori.
+      description: Create new Kategori and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Kategori"
+      parameters:
+        - name: create Kategori
+          in: body
+          required: true
+          description: Create Kategori body request
+          schema:
+            type: object
+            properties:
+              namaKategori:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /kategori/{id}:
+    get:
+      summary: Returns one of Kategori.
+      description: |
+        Returns one Kategori
+      security:
+        - Bearer: []
+      tags:
+        - "Kategori"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Kategori.
+      description: |
+        Update one Kategori
+      security:
+        - Bearer: []
+      tags:
+        - "Kategori"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Kategori
+          in: body
+          required: true
+          description: Update Kategori body request
+          schema:
+            type: object
+            properties:
+              namaKategori:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Kategori.
+      description: |
+        Delete one Kategori
+      security:
+        - Bearer: []
+      tags:
+        - "Kategori"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /lokasi:
+    get:
+      summary: Returns a list of Lokasi Barang.
+      description: |
+        Returns data of Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Lokasi Barang.
+      description: Create new Lokasi Barang and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - name: create Lokasi Barang
+          in: body
+          required: true
+          description: Create Lokasi Barang body request
+          schema:
+            type: object
+            properties:
+              namaLokasi:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /lokasi/{id}:
+    get:
+      summary: Returns one of Lokasi Barang.
+      description: |
+        Returns one Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Lokasi Barang.
+      description: |
+        Update one Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Lokasi Barang
+          in: body
+          required: true
+          description: Update Lokasi Barang body request
+          schema:
+            type: object
+            properties:
+              namaLokasi:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Lokasi Barang.
+      description: |
+        Delete one Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /karyawan:
+    get:
+      summary: Returns a list of Karyawan.
+      description: |
+        Returns data of Karyawan
+      security:
+        - Bearer: []
+      tags:
+        - "Karyawan"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Karyawan.
+      description: Create new Karyawan and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Karyawan"
+      parameters:
+        - name: create Karyawan
+          in: body
+          required: true
+          description: Create Karyawan body request
+          schema:
+            type: object
+            properties:
+              namaKaryawan:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /karyawan/{id}:
+    get:
+      summary: Returns one of Karyawan.
+      description: |
+        Returns one Karyawan
+      security:
+        - Bearer: []
+      tags:
+        - "Karyawan"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Karyawan.
+      description: |
+        Update one Karyawan
+      security:
+        - Bearer: []
+      tags:
+        - "Karyawan"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Karyawan
+          in: body
+          required: true
+          description: Update Karyawan body request
+          schema:
+            type: object
+            properties:
+              namaKaryawan:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Karyawan.
+      description: |
+        Delete one Karyawan
+      security:
+        - Bearer: []
+      tags:
+        - "Karyawan"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          
+  /barang:
+    get:
+      summary: Returns a list of Barang.
+      description: |
+        Returns data of Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Barang"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Barang.
+      description: Create new Barang and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Barang"
+      parameters:
+        - name: create Barang
+          in: body
+          required: true
+          description: Create Barang body request
+          schema:
+            type: object
+            properties:
+              namaBarang:
+                type: string
+              kategori:
+                type: string
+              tanggalPerolehan:
+                type: string
+              hargaPerolehan:
+                type: number
+              masaGuna: 
+                type: string
+              kondisi:
+                type: string
+              lokasi:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /barang/{id}:
+    get:
+      summary: Returns one of Barang.
+      description: |
+        Returns one Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Barang.
+      description: |
+        Update one Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Barang
+          in: body
+          required: true
+          description: Update Barang body request
+          schema:
+            type: object
+            properties:
+              namaBarang:
+                type: string
+              kategori:
+                type: string
+              tanggalPerolehan:
+                type: string
+              hargaPerolehan:
+                type: number
+              masaGuna: 
+                type: string
+              kondisi:
+                type: string
+              lokasi:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Barang.
+      description: |
+        Delete one Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
