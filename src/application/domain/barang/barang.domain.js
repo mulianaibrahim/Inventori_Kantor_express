@@ -2,6 +2,9 @@ const Barang = require('../../../model/barang');
 const {
     searchKategori
 } = require('../kategori/kategori.domain');
+const {
+    searchLokasi
+} = require('../lokasi/lokasi.domain');
 
 async function searchBarang(namaBarang) {
     const response = await Barang.find({
@@ -59,10 +62,14 @@ async function createBarang(dataBarang) {
     dataBarang.updatedAt = currentTime;
     dataBarang.penggunaSaatIni = "-";
     dataBarang.kodeBarang = generateRandomString(7);
-    const search = await searchKategori(dataBarang.kategori);
+    const kategori = await searchKategori(dataBarang.kategori);
+    const lokasi = await searchLokasi(dataBarang.lokasi);
     try {
-        if (search.status !== 200) {
+        if (kategori.status !== 200) {
             throw new Error('Kategori tersebut tidak ada');
+        }
+        if (lokasi.status !== 200) {
+            throw new Error('Lokasi penyimpanan tersebut tidak ada');
         }
         const create = new Barang(dataBarang);
         const data = await create.save();
@@ -86,10 +93,14 @@ async function updateBarang(id, dataBarang) {
     currentTime.setMinutes(currentTime.getMinutes() + offset);
     dataBarang.updatedAt = currentTime;
     dataBarang.penggunaSaatIni = "-";
-    const search = await searchKategori(dataBarang.kategori);
+    const kategori = await searchKategori(dataBarang.kategori);
+    const lokasi = await searchLokasi(dataBarang.lokasi);
     try {
-        if (search.status !== 200) {
+        if (kategori.status !== 200) {
             throw new Error('Kategori tersebut tidak ada');
+        }
+        if (lokasi.status !== 200) {
+            throw new Error('Lokasi penyimpanan tersebut tidak ada');
         }
         const update = await Barang.updateOne({
             _id: id

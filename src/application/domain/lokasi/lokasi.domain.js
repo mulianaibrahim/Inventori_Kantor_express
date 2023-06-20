@@ -13,7 +13,7 @@ async function searchLokasi(namaLokasi){
     } catch (error) {
         return {
             status: 404,
-            message: 'Data Lokasi tidak ada!',
+            message: 'Data lokasi penyimpanan tidak ada!',
         }
     }
 }
@@ -41,7 +41,7 @@ async function getLokasi(id) {
     } catch (error) {
         return {
             status: 404,
-            message: 'Lokasi tidak ditemukan'
+            message: 'Lokasi penyimpanan tidak ditemukan'
         };
     }
 }
@@ -55,12 +55,12 @@ async function createLokasi(dataLokasi) {
     const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
         if(search.status === 200){
-            throw new Error('Nama lokasi barang sudah ada');
+            throw new Error('Nama lokasi penyimpanan sudah ada');
         }
         const create = new Lokasi(dataLokasi);
         const data = await create.save();
         if (!data) {
-            throw new Error("Gagal menambahkan Lokasi")
+            throw new Error("Gagal menambahkan lokasi penyimpanan")
         }
         return {
             status: 200,
@@ -81,13 +81,13 @@ async function updateLokasi(id, dataLokasi) {
     const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
         if(search.status === 200){
-            throw new Error('Nama lokasi barang sudah ada');
+            throw new Error('Nama lokasi penyimpanan sudah ada');
         }
         const update = await Lokasi.updateOne({
             _id: id
         }, dataLokasi);
         if (!update) {
-            throw new Error('Gagal memperbarui Lokasi', );
+            throw new Error('Gagal memperbarui lokasi penyimpanan', );
         }
         return {
             status: 200,
@@ -107,12 +107,12 @@ async function deleteLokasi(id) {
         });
         return {
             status: 200,
-            message: 'Berhasil menghapus Lokasi'
+            message: 'Berhasil menghapus lokasi penyimpanan'
         };
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus Lokasi'
+            message: 'Gagal menghapus lokasi penyimpanan'
         };
     }
 }

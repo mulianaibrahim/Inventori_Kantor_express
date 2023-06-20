@@ -68,7 +68,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
                 })
                 .set('Authorization', token);
             expect(lokasi.statusCode).toBe(500);
-            expect(lokasi.body.message).toBe('Nama lokasi barang sudah ada');
+            expect(lokasi.body.message).toBe('Nama lokasi penyimpanan sudah ada');
         });
     });
     describe('GET /lokasi/:id', () => {
@@ -87,7 +87,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
                 )
                 .set('Authorization', token);
             expect(lokasi.statusCode).toBe(404);
-            expect(lokasi.body.message).toBe('Lokasi tidak ditemukan');
+            expect(lokasi.body.message).toBe('Lokasi penyimpanan tidak ditemukan');
         });
     });
     describe('PUT /lokasi/:id', () => {
@@ -109,7 +109,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
                 })
                 .set('Authorization', token);
             expect(lokasi.statusCode).toBe(500);
-            expect(lokasi.body.message).toBe('Nama lokasi barang sudah ada');
+            expect(lokasi.body.message).toBe('Nama lokasi penyimpanan sudah ada');
         });
     });
     describe('DELETE /lokasi/:id', () => {
@@ -119,7 +119,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
                 )
                 .set('Authorization', token);
             expect(lokasi.status).toBe(200);
-            expect(lokasi.body.message).toBe('Berhasil menghapus Lokasi');
+            expect(lokasi.body.message).toBe('Berhasil menghapus lokasi penyimpanan');
         });
     });
 
