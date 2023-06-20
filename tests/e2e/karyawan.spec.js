@@ -29,7 +29,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
                 username: data.username,
                 password: data.password
             });
-        token = auth.body.token;
+        token = auth.body.data.token;
     });
     afterAll(async () => {
         await deleteUser();

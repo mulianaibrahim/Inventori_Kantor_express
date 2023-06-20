@@ -102,12 +102,9 @@ async function updateKaryawan(id, dataKaryawan) {
 }
 async function deleteKaryawan(id) {
     try {
-        const destroy = await Karyawan.deleteOne({
+        await Karyawan.deleteOne({
             _id: id
         });
-        if (!destroy) {
-            throw new Error('Gagal menghapus karyawan', );
-        }
         return {
             status: 200,
             message: 'Berhasil menghapus karyawan'
@@ -115,7 +112,7 @@ async function deleteKaryawan(id) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: 'Gagal menghapus karyawan'
         };
     }
 }

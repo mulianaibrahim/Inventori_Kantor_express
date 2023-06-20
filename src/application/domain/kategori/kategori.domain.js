@@ -102,12 +102,9 @@ async function updateKategori(id, dataKategori) {
 }
 async function deleteKategori(id) {
     try {
-        const destroy = await Kategori.deleteOne({
+        await Kategori.deleteOne({
             _id: id
         });
-        if (!destroy) {
-            throw new Error('Gagal menghapus kategori', );
-        }
         return {
             status: 200,
             message: 'Berhasil menghapus kategori'
@@ -115,7 +112,7 @@ async function deleteKategori(id) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: 'Gagal menghapus kategori'
         };
     }
 }

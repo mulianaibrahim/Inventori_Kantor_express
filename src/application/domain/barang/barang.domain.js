@@ -110,12 +110,9 @@ async function updateBarang(id, dataBarang) {
 }
 async function deleteBarang(id) {
     try {
-        const destroy = await Barang.deleteOne({
+        await Barang.deleteOne({
             _id: id
         });
-        if (!destroy) {
-            throw new Error('Gagal menghapus Barang', );
-        }
         return {
             status: 200,
             message: 'Berhasil menghapus Barang'
@@ -123,7 +120,7 @@ async function deleteBarang(id) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: 'Gagal menghapus Barang'
         };
     }
 }
