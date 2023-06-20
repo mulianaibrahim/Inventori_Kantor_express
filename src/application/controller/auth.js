@@ -6,7 +6,7 @@ const {
 async function userRegister(req, res) {
     const body = req.body;
     const response = await register(body);
-    res.status(response.status).send(response.data)
+    res.status(response.status).send(response)
 }
 
 async function userLogin(req, res) {
@@ -15,7 +15,7 @@ async function userLogin(req, res) {
         password
     } = req.body;
     const response = await login(username, password);
-    res.status(response.status).send(response.data);
+    res.status(response.status).send(response);
 }
 
 module.exports = {

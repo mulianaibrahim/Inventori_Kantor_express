@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-  kodeBarang: {
-    type: String,
-    required: true,
-    unique: true
-  },
+  kodeBarang: String,
   namaBarang: String,
   kategori: String,
   tanggalPerolehan: Date,

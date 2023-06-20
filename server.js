@@ -5,7 +5,7 @@ const session = require('express-session');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const fs = require('fs');
-
+require('dotenv').config();
 const cors = require('cors');
 
 const routerv1 = require('./src/application/routes/v1.routes');

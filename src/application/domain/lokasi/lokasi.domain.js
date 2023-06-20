@@ -1,7 +1,7 @@
-const Kategori = require('../../../model/kategori');
+const Lokasi = require('../../../model/lokasi');
 
-async function searchKategori(namaKategori){
-    const response = await Kategori.find({namaKategori: namaKategori});
+async function searchLokasi(namaLokasi){
+    const response = await Lokasi.find({namaLokasi: namaLokasi});
     try {
         if(response.length < 1){
             throw new Error();
@@ -13,22 +13,22 @@ async function searchKategori(namaKategori){
     } catch (error) {
         return {
             status: 404,
-            message: 'Data kategori tidak ada!',
+            message: 'Data lokasi penyimpanan tidak ada!',
         }
     }
 }
 
-async function fetchKategori() {
-    const response = await Kategori.find({});
+async function fetchLokasi() {
+    const response = await Lokasi.find({});
     return {
         status: 200,
         data: response,
     };
 }
 
-async function getKategori(id) {
+async function getLokasi(id) {
     try {
-        const response = await Kategori.findOne({
+        const response = await Lokasi.findOne({
             _id: id
         });
         if(response === null){
@@ -41,30 +41,30 @@ async function getKategori(id) {
     } catch (error) {
         return {
             status: 404,
-            message: 'Kategori tidak ditemukan'
+            message: 'Lokasi penyimpanan tidak ditemukan'
         };
     }
 }
 
-async function createKategori(dataKategori) {
+async function createLokasi(dataLokasi) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKategori.createdAt = currentTime;
-    dataKategori.updatedAt = currentTime;
-    const search = await searchKategori(dataKategori.namaKategori);
+    dataLokasi.createdAt = currentTime;
+    dataLokasi.updatedAt = currentTime;
+    const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
         if(search.status === 200){
-            throw new Error('Kategori sudah ada');
+            throw new Error('Nama lokasi penyimpanan sudah ada');
         }
-        const create = new Kategori(dataKategori);
+        const create = new Lokasi(dataLokasi);
         const data = await create.save();
         if (!data) {
-            throw new Error("Gagal menambahkan kategori")
+            throw new Error("Gagal menambahkan lokasi penyimpanan")
         }
         return {
             status: 200,
-            data: dataKategori,
+            data: dataLokasi,
         };
     } catch (error) {
         return {
@@ -73,25 +73,25 @@ async function createKategori(dataKategori) {
         };
     }
 }
-async function updateKategori(id, dataKategori) {
+async function updateLokasi(id, dataLokasi) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKategori.updatedAt = currentTime;
-    const search = await searchKategori(dataKategori.namaKategori);
+    dataLokasi.updatedAt = currentTime;
+    const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
         if(search.status === 200){
-            throw new Error('Kategori sudah ada');
+            throw new Error('Nama lokasi penyimpanan sudah ada');
         }
-        const update = await Kategori.updateOne({
+        const update = await Lokasi.updateOne({
             _id: id
-        }, dataKategori);
+        }, dataLokasi);
         if (!update) {
-            throw new Error('Gagal memperbarui kategori', );
+            throw new Error('Gagal memperbarui lokasi penyimpanan', );
         }
         return {
             status: 200,
-            data: dataKategori,
+            data: dataLokasi,
         };
     } catch (error) {
         return {
@@ -100,28 +100,28 @@ async function updateKategori(id, dataKategori) {
         };
     }
 }
-async function deleteKategori(id) {
+async function deleteLokasi(id) {
     try {
-        await Kategori.deleteOne({
+        await Lokasi.deleteOne({
             _id: id
         });
         return {
             status: 200,
-            message: 'Berhasil menghapus kategori'
+            message: 'Berhasil menghapus lokasi penyimpanan'
         };
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus kategori'
+            message: 'Gagal menghapus lokasi penyimpanan'
         };
     }
 }
 
 module.exports = {
-    fetchKategori,
-    getKategori,
-    createKategori,
-    updateKategori,
-    deleteKategori,
-    searchKategori
+    fetchLokasi,
+    getLokasi,
+    createLokasi,
+    updateLokasi,
+    deleteLokasi,
+    searchLokasi
 };

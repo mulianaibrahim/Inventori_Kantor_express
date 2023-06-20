@@ -4,6 +4,26 @@ const User = require('../../../model/users');
 
 const secret = 'very-secret';
 
+async function searchUser(username) {
+    const response = await User.find({
+        username: username
+    });
+    try {
+        if (response.length < 1) {
+            throw new Error();
+        }
+        return {
+            status: 200,
+            data: response,
+        };
+    } catch (error) {
+        return {
+            status: 404,
+            message: 'Username tidak ada!',
+        }
+    }
+}
+
 async function register(body) {
     const {
         username,
@@ -11,25 +31,36 @@ async function register(body) {
         password_confirm,
         name
     } = body;
-    if (password !== password_confirm) {
+
+    const search = await searchUser(username);
+
+    try {
+        if (search.status === 200) {
+            throw new Error('Username sudah digunakan');
+        }
+        if (password !== password_confirm) {
+            throw new Error('Password dan konfirmasi password tidak sesuai');
+        }
+        const user = new User({
+            username,
+            password: hashPassword(password),
+            name,
+        });
+        await user.save();
         return {
-            status: 400,
-            message: 'password dan konfirmasi password tidak sesuai',
+            status: 200,
+            data: {
+                username,
+                name,
+            },
+        };
+    } catch (error) {
+        return {
+            status: 500,
+            message: error.message
         };
     }
-    const user = new User({
-        username,
-        password: hashPassword(password),
-        name,
-    });
-    await user.save();
-    return {
-        status: 200,
-        data: {
-            username,
-            name,
-        },
-    };
+
 };
 
 async function login(username, password) {
@@ -40,7 +71,7 @@ async function login(username, password) {
     if (!user) {
         return {
             status: 401,
-            message: 'username atau password salah'
+            message: 'Username atau password salah'
         };
     }
     const data = {

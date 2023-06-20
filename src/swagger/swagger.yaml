@@ -167,6 +167,106 @@ paths:
       responses:
         200:
           description: OK
+  /lokasi:
+    get:
+      summary: Returns a list of Lokasi Barang.
+      description: |
+        Returns data of Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Lokasi Barang.
+      description: Create new Lokasi Barang and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - name: create Lokasi Barang
+          in: body
+          required: true
+          description: Create Lokasi Barang body request
+          schema:
+            type: object
+            properties:
+              namaLokasi:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /lokasi/{id}:
+    get:
+      summary: Returns one of Lokasi Barang.
+      description: |
+        Returns one Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Lokasi Barang.
+      description: |
+        Update one Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Lokasi Barang
+          in: body
+          required: true
+          description: Update Lokasi Barang body request
+          schema:
+            type: object
+            properties:
+              namaLokasi:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Lokasi Barang.
+      description: |
+        Delete one Lokasi Barang
+      security:
+        - Bearer: []
+      tags:
+        - "Lokasi Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
   /karyawan:
     get:
       summary: Returns a list of Karyawan.
