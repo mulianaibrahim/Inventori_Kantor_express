@@ -1,4 +1,5 @@
 const Kategori = require('../../../model/kategori');
+const Barang = require('../../../model/barang')
 
 async function searchKategori(namaKategori){
     const response = await Kategori.find({namaKategori: namaKategori});

@@ -10,4 +10,4 @@ const schema = new mongoose.Schema({
   updatedAt: Date,
 });
 
-module.exports = mongoose.model('kategoris', schema)
+module.exports = mongoose.model('Kategori', schema)
