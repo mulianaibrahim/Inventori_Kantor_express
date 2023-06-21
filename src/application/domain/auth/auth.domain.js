@@ -41,12 +41,11 @@ async function register(body) {
         if (password !== password_confirm) {
             throw new Error('Password dan konfirmasi password tidak sesuai');
         }
-        const user = new User({
+        await User.create({
             username,
             password: hashPassword(password),
             name,
         });
-        await user.save();
         return {
             status: 200,
             data: {

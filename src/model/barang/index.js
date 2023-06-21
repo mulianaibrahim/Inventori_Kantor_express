@@ -28,7 +28,11 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  lokasi: String,
+  lokasi: {
+    type: Schema.Types.ObjectId,
+    ref: 'Lokasi',
+    required: true
+  },
   penggunaSaatIni: String,
   createdAt: Date,
   updatedAt: Date,
