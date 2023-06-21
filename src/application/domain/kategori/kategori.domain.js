@@ -57,9 +57,9 @@ async function createKategori(dataKategori) {
         if(search.status === 200){
             throw new Error('Kategori sudah ada');
         }
-        const create = new Kategori(dataKategori);
-        const data = await create.save();
-        if (!data) {
+        await Kategori.create(dataKategori);
+
+        if (!Kategori) {
             throw new Error("Gagal menambahkan kategori")
         }
         return {

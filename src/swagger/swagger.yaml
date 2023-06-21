@@ -393,7 +393,7 @@ paths:
         - name: create Barang
           in: body
           required: true
-          description: Create Barang body request
+          description: Create Barang body request. Kategori and Lokasi is ObjectId of Their Shema
           schema:
             type: object
             properties:
@@ -451,7 +451,7 @@ paths:
         - name: update Barang
           in: body
           required: true
-          description: Update Barang body request
+          description: Update Barang body request. Kategori and Lokasi is ObjectId of Their Shema
           schema:
             type: object
             properties:

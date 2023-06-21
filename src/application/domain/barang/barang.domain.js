@@ -1,9 +1,9 @@
 const Barang = require('../../../model/barang');
 const {
-    searchKategori
+    getKategori
 } = require('../kategori/kategori.domain');
 const {
-    searchLokasi
+    getLokasi
 } = require('../lokasi/lokasi.domain');
 
 async function searchBarang(namaBarang) {
@@ -27,24 +27,58 @@ async function searchBarang(namaBarang) {
 }
 
 async function fetchBarang() {
-    const response = await Barang.find({});
+    const response = await Barang.find({}).populate(["kategori", "lokasi"]);
+    const dataBaru = response.map(function (d) {
+        return {
+            _id: d._id,
+            kodeBarang: d.kodeBarang,
+            namaBarang: d.namaBarang,
+            kategori: d.kategori.namaKategori,
+            tanggalPerolehan: d.tanggalPerolehan,
+            hargaPerolehan: d.hargaPerolehan,
+            masaGuna: d.masaGuna,
+            kondisi: d.kondisi,
+            lokasi: d.lokasi.namaLokasi,
+            penggunaSaatIni: d.penggunaSaatIni,
+            createdAt: d.createdAt,
+            updatedAt: d.updatedAt,
+        }
+    });
     return {
         status: 200,
-        data: response,
+        data: dataBaru,
     };
 }
 
 async function getBarang(id) {
     try {
-        const response = await Barang.findOne({
+        const response = await Barang.find({
             _id: id
-        });
+        }).populate(["kategori", "lokasi"]);
+
         if (response === null) {
             throw new Error();
         }
+        const dataBaru = response.map(function (d) {
+            return {
+                _id: d._id,
+                kodeBarang: d.kodeBarang,
+                namaBarang: d.namaBarang,
+                kategori: d.kategori.namaKategori,
+                tanggalPerolehan: d.tanggalPerolehan,
+                hargaPerolehan: d.hargaPerolehan,
+                masaGuna: d.masaGuna,
+                kondisi: d.kondisi,
+                lokasi: d.lokasi.namaLokasi,
+                penggunaSaatIni: d.penggunaSaatIni,
+                createdAt: d.createdAt,
+                updatedAt: d.updatedAt,
+            }
+        });
+        
         return {
             status: 200,
-            data: response
+            data: dataBaru
         };
     } catch (error) {
         return {
@@ -62,8 +96,8 @@ async function createBarang(dataBarang) {
     dataBarang.updatedAt = currentTime;
     dataBarang.penggunaSaatIni = "-";
     dataBarang.kodeBarang = generateRandomString(7);
-    const kategori = await searchKategori(dataBarang.kategori);
-    const lokasi = await searchLokasi(dataBarang.lokasi);
+    const kategori = await getKategori(dataBarang.kategori);
+    const lokasi = await getLokasi(dataBarang.lokasi);
     try {
         if (kategori.status !== 200) {
             throw new Error('Kategori tersebut tidak ada');
@@ -71,9 +105,8 @@ async function createBarang(dataBarang) {
         if (lokasi.status !== 200) {
             throw new Error('Lokasi penyimpanan tersebut tidak ada');
         }
-        const create = new Barang(dataBarang);
-        const data = await create.save();
-        if (!data) {
+        await Barang.create(dataBarang);
+        if (!Barang) {
             throw new Error("Gagal menambahkan Barang")
         }
         return {
@@ -93,8 +126,8 @@ async function updateBarang(id, dataBarang) {
     currentTime.setMinutes(currentTime.getMinutes() + offset);
     dataBarang.updatedAt = currentTime;
     dataBarang.penggunaSaatIni = "-";
-    const kategori = await searchKategori(dataBarang.kategori);
-    const lokasi = await searchLokasi(dataBarang.lokasi);
+    const kategori = await getKategori(dataBarang.kategori);
+    const lokasi = await getLokasi(dataBarang.lokasi);
     try {
         if (kategori.status !== 200) {
             throw new Error('Kategori tersebut tidak ada');

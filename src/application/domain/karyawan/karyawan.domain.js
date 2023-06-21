@@ -57,9 +57,8 @@ async function createKaryawan(dataKaryawan) {
         if(search.status === 200){
             throw new Error('Karyawan sudah ada');
         }
-        const create = new Karyawan(dataKaryawan);
-        const data = await create.save();
-        if (!data) {
+        await Karyawan.create(dataKaryawan);
+        if (!Karyawan) {
             throw new Error("Gagal menambahkan karyawan")
         }
         return {

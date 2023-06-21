@@ -57,9 +57,8 @@ async function createLokasi(dataLokasi) {
         if(search.status === 200){
             throw new Error('Nama lokasi penyimpanan sudah ada');
         }
-        const create = new Lokasi(dataLokasi);
-        const data = await create.save();
-        if (!data) {
+        await Lokasi.create(dataLokasi);
+        if (!Lokasi) {
             throw new Error("Gagal menambahkan lokasi penyimpanan")
         }
         return {
