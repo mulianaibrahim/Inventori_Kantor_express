@@ -21,7 +21,6 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "6486ef6fdb1b04f73458c1d0",
-        penggunaSaatIni: "-"
     },
     {
         _id: '6486ef78dc1c04f730a2c1d2',
@@ -33,7 +32,6 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "6486ef6fdb1b04f73458c1d0",
-        penggunaSaatIni: "-"
     },
     {
         _id: '64871282407585f33503200c',
@@ -45,7 +43,6 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "6486ef6fdb1b04f73458c1d0",
-        penggunaSaatIni: "-"
     },
     {
         _id: '64871289c0c87723dd4a18f0',
@@ -57,7 +54,6 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "6486ef6fdb1b04f73458c1d0",
-        penggunaSaatIni: "-"
     },
 ];
 async function insertBarang() {

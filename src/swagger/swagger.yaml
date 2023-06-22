@@ -393,7 +393,7 @@ paths:
         - name: create Barang
           in: body
           required: true
-          description: Create Barang body request. Kategori and Lokasi is ObjectId of Their Shema
+          description: Create Barang body request. Kategori and Lokasi is ObjectId of Their Shema. Tanggal format is yyyy-mm-dd
           schema:
             type: object
             properties:
@@ -451,7 +451,7 @@ paths:
         - name: update Barang
           in: body
           required: true
-          description: Update Barang body request. Kategori and Lokasi is ObjectId of Their Shema
+          description: Update Barang body request. Kategori and Lokasi is ObjectId of Their Shema. Tanggal format is yyyy-mm-dd
           schema:
             type: object
             properties:
@@ -482,6 +482,114 @@ paths:
         - Bearer: []
       tags:
         - "Barang"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+
+  /penggunaan:
+    get:
+      summary: Returns a list of Penggunaan.
+      description: |
+        Returns data of Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Penggunaan.
+      description: Create new Penggunaan and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      parameters:
+        - name: create Penggunaan
+          in: body
+          required: true
+          description: Create Penggunaan body request. namaBarang is ObjectId of Barang Schema and pengguna is ObjectId of Karyawan Schema. Tanggal format is yyyy-mm-dd
+          schema:
+            type: object
+            properties:
+              namaBarang:
+                type: string
+              pengguna:
+                type: string
+              tanggalMulaiPenggunaan:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /penggunaan/{id}:
+    get:
+      summary: Returns one of Penggunaan.
+      description: |
+        Returns one Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of Penggunaan.
+      description: |
+        Update one Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update Penggunaan
+          in: body
+          required: true
+          description: Create Penggunaan body request. namaBarang is ObjectId of Barang Schema and pengguna is ObjectId of Karyawan Schema. Tanggal format is yyyy-mm-dd
+          schema:
+            type: object
+            properties:
+              namaBarang:
+                type: string
+              pengguna:
+                type: string
+              tanggalMulaiPenggunaan:
+                type: string
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of Penggunaan.
+      description: |
+        Delete one Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
       parameters:
         - in: path
           name: id

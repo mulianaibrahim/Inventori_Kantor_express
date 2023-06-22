@@ -33,7 +33,12 @@ const schema = new Schema({
     ref: 'Lokasi',
     required: true
   },
-  penggunaSaatIni: String,
+  penggunaSaatIni: {
+    type: Schema.Types.ObjectId,
+    ref: 'Karyawan',
+    sparse: true,
+    default: null
+  },
   createdAt: Date,
   updatedAt: Date,
 });

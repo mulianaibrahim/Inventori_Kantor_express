@@ -27,8 +27,14 @@ async function searchBarang(namaBarang) {
 }
 
 async function fetchBarang() {
-    const response = await Barang.find({}).populate(["kategori", "lokasi"]);
+    const response = await Barang.find({}).populate(["kategori", "lokasi", "penggunaSaatIni"]);
     const dataBaru = response.map(function (d) {
+        let pengguna;
+        if (d.penggunaSaatIni !== null) {
+            pengguna = d.penggunaSaatIni.namaKaryawan
+        } else {
+            pengguna = null;
+        }
         return {
             _id: d._id,
             kodeBarang: d.kodeBarang,
@@ -39,7 +45,7 @@ async function fetchBarang() {
             masaGuna: d.masaGuna,
             kondisi: d.kondisi,
             lokasi: d.lokasi.namaLokasi,
-            penggunaSaatIni: d.penggunaSaatIni,
+            penggunaSaatIni: pengguna,
             createdAt: d.createdAt,
             updatedAt: d.updatedAt,
         }
@@ -54,12 +60,18 @@ async function getBarang(id) {
     try {
         const response = await Barang.find({
             _id: id
-        }).populate(["kategori", "lokasi"]);
+        }).populate(["kategori", "lokasi", "penggunaSaatIni"]);
 
         if (response === null) {
             throw new Error();
         }
         const dataBaru = response.map(function (d) {
+            let pengguna;
+            if (d.penggunaSaatIni !== null) {
+                pengguna = d.penggunaSaatIni.namaKaryawan
+            } else {
+                pengguna = null;
+            }
             return {
                 _id: d._id,
                 kodeBarang: d.kodeBarang,
@@ -70,12 +82,12 @@ async function getBarang(id) {
                 masaGuna: d.masaGuna,
                 kondisi: d.kondisi,
                 lokasi: d.lokasi.namaLokasi,
-                penggunaSaatIni: d.penggunaSaatIni,
+                penggunaSaatIni: pengguna,
                 createdAt: d.createdAt,
                 updatedAt: d.updatedAt,
             }
         });
-        
+
         return {
             status: 200,
             data: dataBaru
@@ -94,7 +106,6 @@ async function createBarang(dataBarang) {
     currentTime.setMinutes(currentTime.getMinutes() + offset);
     dataBarang.createdAt = currentTime;
     dataBarang.updatedAt = currentTime;
-    dataBarang.penggunaSaatIni = "-";
     dataBarang.kodeBarang = generateRandomString(7);
     const kategori = await getKategori(dataBarang.kategori);
     const lokasi = await getLokasi(dataBarang.lokasi);
@@ -105,6 +116,7 @@ async function createBarang(dataBarang) {
         if (lokasi.status !== 200) {
             throw new Error('Lokasi penyimpanan tersebut tidak ada');
         }
+        dataBarang.penggunaSaatIni = null;
         await Barang.create(dataBarang);
         if (!Barang) {
             throw new Error("Gagal menambahkan Barang")
@@ -125,19 +137,18 @@ async function updateBarang(id, dataBarang) {
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
     dataBarang.updatedAt = currentTime;
-    dataBarang.penggunaSaatIni = "-";
-    const kategori = await getKategori(dataBarang.kategori);
-    const lokasi = await getLokasi(dataBarang.lokasi);
     try {
-        if (kategori.status !== 200) {
-            throw new Error('Kategori tersebut tidak ada');
+        if (dataBarang.hasOwnProperty('kategori') && dataBarang.hasOwnProperty('lokasi')) {
+            const kategori = await getKategori(dataBarang.kategori);
+            const lokasi = await getLokasi(dataBarang.lokasi);
+            if (kategori.status !== 200) {
+                throw new Error('Kategori tersebut tidak ada');
+            }
+            if (lokasi.status !== 200) {
+                throw new Error('Lokasi penyimpanan tersebut tidak ada');
+            }
         }
-        if (lokasi.status !== 200) {
-            throw new Error('Lokasi penyimpanan tersebut tidak ada');
-        }
-        const update = await Barang.updateOne({
-            _id: id
-        }, dataBarang);
+        const update = await Barang.findByIdAndUpdate(id, dataBarang);
         if (!update) {
             throw new Error('Gagal memperbarui Barang', );
         }
