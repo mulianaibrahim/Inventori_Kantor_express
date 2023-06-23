@@ -393,7 +393,7 @@ paths:
         - name: create Barang
           in: body
           required: true
-          description: Create Barang body request. Kategori and Lokasi is ObjectId of Their Shema
+          description: Create Barang body request. Kategori and Lokasi is ObjectId of Their Shema. Tanggal format is yyyy-mm-dd
           schema:
             type: object
             properties:
@@ -451,7 +451,7 @@ paths:
         - name: update Barang
           in: body
           required: true
-          description: Update Barang body request. Kategori and Lokasi is ObjectId of Their Shema
+          description: Update Barang body request. Kategori and Lokasi is ObjectId of Their Shema. Tanggal format is yyyy-mm-dd
           schema:
             type: object
             properties:
@@ -487,6 +487,88 @@ paths:
           name: id
           type: string
           required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /penggunaan:
+    get:
+      summary: Returns a list of Penggunaan.
+      description: |
+        Returns data of Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new Penggunaan.
+      description: Create new Penggunaan and return the created data on uppercase
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      parameters:
+        - name: create Penggunaan
+          in: body
+          required: true
+          description: Create Penggunaan body request. namaBarang is ObjectId of Barang Schema and pengguna is ObjectId of Karyawan Schema. Tanggal format is yyyy-mm-dd
+          schema:
+            type: object
+            properties:
+              namaBarang:
+                type: string
+              pengguna:
+                type: string
+              tanggalMulaiPenggunaan:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /penggunaan/{id}:
+    patch:
+      summary: Finish of Penggunaan.
+      description: |
+        Finish Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Penggunaan"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: Finish Penggunaan
+          in: body
+          required: true
+          description: Set penggunaan to Finished. After this action data will be deleted.
+          schema:
+            type: object
+            properties:
+              kondisiPengembalian:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /historiPenggunaan:
+    get:
+      summary: Returns a list of Histori Penggunaan.
+      description: |
+        Returns data of Histori Penggunaan
+      security:
+        - Bearer: []
+      tags:
+        - "Histori Penggunaan"
       produces:
         - application/json
       responses:

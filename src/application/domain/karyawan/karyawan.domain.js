@@ -1,4 +1,5 @@
 const Karyawan = require('../../../model/karyawan');
+const Barang = require('../../../model/barang');
 
 async function searchKaryawan(namaKaryawan){
     const response = await Karyawan.find({namaKaryawan: namaKaryawan});
@@ -101,17 +102,25 @@ async function updateKaryawan(id, dataKaryawan) {
 }
 async function deleteKaryawan(id) {
     try {
-        await Karyawan.deleteOne({
-            _id: id
+        const barang = await Barang.find({
+            penggunaSaatIni: id
         });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus karyawan'
-        };
+        if(!barang){
+            await Karyawan.deleteOne({
+                _id: id
+            });
+            return {
+                status: 200,
+                message: 'Berhasil menghapus karyawan'
+            };
+        }else{
+            throw new Error(`Tidak dapat menghapus karyawan. Karywan tersebut sedang menggunakan barang ${barang.namaBarang}`)
+        }
+        
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus karyawan'
+            message: error.message
         };
     }
 }

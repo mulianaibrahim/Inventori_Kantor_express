@@ -68,8 +68,8 @@ describe('tests/e2e/barang.spec.js', () => {
             expect(barang.body.data.masaGuna).toBe('12 BULAN');
             expect(barang.body.data.kondisi).toBe('BAIK');
             expect(barang.body.data.lokasi).toBe('6486ef6fdb1b04f73458c1d0');
+            expect(barang.body.data.penggunaSaatIni).toBe(null);
             expect(barang.body.data).toHaveProperty('kodeBarang');
-            expect(barang.body.data).toHaveProperty('penggunaSaatIni');
         });
         it('should return error if kategori missing when data inserted', async () => {
             const kategori = await supertest(app)
@@ -126,7 +126,7 @@ describe('tests/e2e/barang.spec.js', () => {
             expect(barang.body.data[0].masaGuna).toBe('12 BULAN');
             expect(barang.body.data[0].kondisi).toBe('BAIK');
             expect(barang.body.data[0].lokasi).toBe('lokasi1');
-            expect(barang.body.data[0].penggunaSaatIni).toBe('-');
+            expect(barang.body.data[0].penggunaSaatIni).toBe(null);
             expect(barang.body.data[0].kodeBarang).toBe('544244');
         });
         it('should return not found error when data is not exists', async () => {
@@ -161,7 +161,6 @@ describe('tests/e2e/barang.spec.js', () => {
             expect(barang.body.data).toHaveProperty('masaGuna');
             expect(barang.body.data).toHaveProperty('kondisi');
             expect(barang.body.data).toHaveProperty('lokasi');
-            expect(barang.body.data).toHaveProperty('penggunaSaatIni');
             expect(barang.body.data.namaBarang).toBe('BARANG 1 EDIT');
             expect(barang.body.data.kategori).toBe('6486ef6fdc1c04f73458c1d0');
             expect(barang.body.data.tanggalPerolehan).toBe('2022-05-02');
@@ -169,7 +168,6 @@ describe('tests/e2e/barang.spec.js', () => {
             expect(barang.body.data.masaGuna).toBe('12 BULAN');
             expect(barang.body.data.kondisi).toBe('BAIK');
             expect(barang.body.data.lokasi).toBe('6486ef6fdb1b04f73458c1d0');
-            expect(barang.body.data.penggunaSaatIni).toBe('-');
         });
         it('should return error if kategori missing when data inserted', async () => {
             const kategori = await supertest(app)
