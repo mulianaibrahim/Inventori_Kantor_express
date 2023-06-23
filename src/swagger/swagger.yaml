@@ -492,7 +492,6 @@ paths:
       responses:
         200:
           description: OK
-
   /penggunaan:
     get:
       summary: Returns a list of Penggunaan.
@@ -534,10 +533,10 @@ paths:
         200:
           description: OK
   /penggunaan/{id}:
-    get:
-      summary: Returns one of Penggunaan.
+    patch:
+      summary: Finish of Penggunaan.
       description: |
-        Returns one Penggunaan
+        Finish Penggunaan
       security:
         - Bearer: []
       tags:
@@ -547,54 +546,29 @@ paths:
           name: id
           type: string
           required: true
+        - name: Finish Penggunaan
+          in: body
+          required: true
+          description: Set penggunaan to Finished. After this action data will be deleted.
+          schema:
+            type: object
+            properties:
+              kondisiPengembalian:
+                type: string
       produces:
         - application/json
       responses:
         200:
           description: OK
-    put:
-      summary: Update one of Penggunaan.
+  /historiPenggunaan:
+    get:
+      summary: Returns a list of Histori Penggunaan.
       description: |
-        Update one Penggunaan
+        Returns data of Histori Penggunaan
       security:
         - Bearer: []
       tags:
-        - "Penggunaan"
-      parameters:
-        - in: path
-          name: id
-          type: string
-          required: true
-        - name: update Penggunaan
-          in: body
-          required: true
-          description: Create Penggunaan body request. namaBarang is ObjectId of Barang Schema and pengguna is ObjectId of Karyawan Schema. Tanggal format is yyyy-mm-dd
-          schema:
-            type: object
-            properties:
-              namaBarang:
-                type: string
-              pengguna:
-                type: string
-              tanggalMulaiPenggunaan:
-                type: string
-        - application/json
-      responses:
-        200:
-          description: OK
-    delete:
-      summary: Delete one of Penggunaan.
-      description: |
-        Delete one Penggunaan
-      security:
-        - Bearer: []
-      tags:
-        - "Penggunaan"
-      parameters:
-        - in: path
-          name: id
-          type: string
-          required: true
+        - "Histori Penggunaan"
       produces:
         - application/json
       responses:

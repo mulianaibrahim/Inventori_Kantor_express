@@ -3,25 +3,29 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
   namaBarang: {
-    type: Schema.Types.ObjectId,
-    ref: 'Barang',
+    type: String,
     required: true,
   },
   pengguna: {
-    type: Schema.Types.ObjectId,
-    ref: 'Karyawan',
+    type: String,
     required: true
   },
   tanggalMulaiPenggunaan: {
     type: Date,
     required: true,
   },
-  statusPenggunaan: {
+  tanggalSelesaiPenggunaan: {
+    type: Date,
+    required: true,
+  },
+  kondisiAwal: {
+    type: String,
+  },
+  kondisiPengembalian: {
     type: String,
     required: true,
   },
   createdAt: Date,
-  updatedAt: Date,
 });
 
-module.exports = mongoose.model('Penggunaan', schema)
+module.exports = mongoose.model('HistoriPenggunaan', schema)

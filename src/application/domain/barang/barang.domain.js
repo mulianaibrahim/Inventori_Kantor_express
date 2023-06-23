@@ -1,4 +1,5 @@
 const Barang = require('../../../model/barang');
+
 const {
     getKategori
 } = require('../kategori/kategori.domain');
@@ -165,17 +166,22 @@ async function updateBarang(id, dataBarang) {
 }
 async function deleteBarang(id) {
     try {
-        await Barang.deleteOne({
-            _id: id
-        });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus Barang'
-        };
+        const pengguna = await getBarang(id);
+        if(pengguna.data[0].penggunaSaatIni === null){
+            await Barang.deleteOne({
+                _id: id
+            });
+            return {
+                status: 200,
+                message: 'Berhasil menghapus Barang'
+            };
+        }else{
+            throw new Error(`Tidak dapat menghapus. Barang ini sedang digunakan oleh ${pengguna.data[0].penggunaSaatIni}`);
+        }
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus Barang'
+            message: error.message
         };
     }
 }

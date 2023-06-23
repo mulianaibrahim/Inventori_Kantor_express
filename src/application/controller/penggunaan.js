@@ -1,18 +1,11 @@
 const {
     fetchPenggunaan,
-    getPenggunaan,
     createPenggunaan,
-    updatePenggunaan,
-    deletePenggunaan
+    selesaikanPenggunaan
 } = require('../domain/penggunaan/penggunaan.domain');
 
 async function getAllPenggunaan(req, res) {
     const response = await fetchPenggunaan();
-    res.status(response.status).send(response);
-}
-async function getOnePenggunaan(req, res) {
-    const id = req.params.id;
-    const response = await getPenggunaan(id);
     res.status(response.status).send(response);
 }
 async function addPenggunaan(req, res) {
@@ -24,26 +17,17 @@ async function addPenggunaan(req, res) {
     const response = await createPenggunaan(dataPenggunaan);
     res.status(response.status).send(response);
 }
-async function updateOnePenggunaan(req, res) {
+async function finishPenggunaan(req, res) {
     const id = req.params.id;
     const dataPenggunaan = {
-        namaBarang: req.body.namaBarang,
-        pengguna: req.body.pengguna,
-        tanggalMulaiPenggunaan: req.body.tanggalMulaiPenggunaan,
+        kondisiPengembalian: req.body.kondisiPengembalian
     };
-    const response = await updatePenggunaan(id, dataPenggunaan);
-    res.status(response.status).send(response);
-}
-async function deleteOnePenggunaan(req, res) {
-    const id = req.params.id;
-    const response = await deletePenggunaan(id);
+    const response = await selesaikanPenggunaan(id, dataPenggunaan);
     res.status(response.status).send(response);
 }
 
 module.exports = {
     getAllPenggunaan,
-    getOnePenggunaan,
     addPenggunaan,
-    updateOnePenggunaan,
-    deleteOnePenggunaan,
+    finishPenggunaan,
 };

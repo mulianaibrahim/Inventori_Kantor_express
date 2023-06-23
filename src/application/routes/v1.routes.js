@@ -6,6 +6,7 @@ const kategoriCtrl = require('../controller/kategori');
 const lokasiCtrl = require('../controller/lokasi');
 const barangCtrl = require('../controller/barang');
 const penggunaanCtrl = require('../controller/penggunaan');
+const historiPenggunaanCtrl = require('../controller/historiPenggunaan');
 const authCtrl = require('../controller/auth');
 const auth = require('../middleware/auth');
 
@@ -49,9 +50,10 @@ app.delete('/barang/:id', auth,  barangCtrl.deleteOneBarang);
 
 //penggunaan
 app.get('/penggunaan',auth, penggunaanCtrl.getAllPenggunaan);
-app.get('/penggunaan/:id', auth, penggunaanCtrl.getOnePenggunaan);
 app.post('/penggunaan', auth,  penggunaanCtrl.addPenggunaan);
-app.put('/penggunaan/:id', auth,  penggunaanCtrl.updateOnePenggunaan);
-app.delete('/penggunaan/:id', auth,  penggunaanCtrl.deleteOnePenggunaan);
+app.patch('/penggunaan/:id', auth,  penggunaanCtrl.finishPenggunaan);
+
+//historiPenggunaan
+app.get('/historiPenggunaan',auth, historiPenggunaanCtrl.getAllHistoriPenggunaan);
 
 module.exports = app;

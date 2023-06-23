@@ -1,4 +1,5 @@
 const Kategori = require('../../../model/kategori');
+const Barang = require('../../../model/barang');
 
 async function searchKategori(namaKategori){
     const response = await Kategori.find({namaKategori: namaKategori});
@@ -102,17 +103,24 @@ async function updateKategori(id, dataKategori) {
 }
 async function deleteKategori(id) {
     try {
-        await Kategori.deleteOne({
-            _id: id
+        const barang = await Barang.find({
+            kategori: id
         });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus kategori'
-        };
+        if(!barang){
+            await Kategori.deleteOne({
+                _id: id
+            });
+            return {
+                status: 200,
+                message: 'Berhasil menghapus kategori'
+            };
+        }else{
+            throw new Error(`Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`);
+        }
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus kategori'
+            message: error.message
         };
     }
 }

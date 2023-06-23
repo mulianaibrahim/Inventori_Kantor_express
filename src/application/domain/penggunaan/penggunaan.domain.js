@@ -4,32 +4,27 @@ const {
     updateBarang
 } = require('../barang/barang.domain');
 
+const {
+    createHistoriPenggunaan
+} = require('../historiPenggunaan/historiPenggunaan.domain');
+
 async function fetchPenggunaan() {
-    const response = await Penggunaan.find({});
+    const response = await Penggunaan.find({}).populate(['namaBarang', 'pengguna']);
+    const dataBaru = response.map(function (d) {
+        return {
+            _id: d._id,
+            namaBarang: d.namaBarang.namaBarang,
+            pengguna: d.pengguna.namaKaryawan,
+            tanggalMulaiPenggunaan: d.tanggalMulaiPenggunaan,
+            kondisiAwal: d.kondisiAwal,
+            statusPenggunaan: d.statusPenggunaan,
+            createdAt: d.createdAt,
+        }
+    });
     return {
         status: 200,
-        data: response,
+        data: dataBaru,
     };
-}
-
-async function getPenggunaan(id) {
-    try {
-        const response = await Penggunaan.findOne({
-            _id: id
-        });
-        if (response === null) {
-            throw new Error();
-        }
-        return {
-            status: 200,
-            data: response
-        };
-    } catch (error) {
-        return {
-            status: 404,
-            message: 'Penggunaan tidak ditemukan'
-        };
-    }
 }
 
 async function createPenggunaan(dataPenggunaan) {
@@ -38,10 +33,10 @@ async function createPenggunaan(dataPenggunaan) {
     currentTime.setMinutes(currentTime.getMinutes() + offset);
     dataPenggunaan.statusPenggunaan = "BERLANGSUNG";
     dataPenggunaan.createdAt = currentTime;
-    dataPenggunaan.updatedAt = currentTime;
     const searchBarang = await getBarang(dataPenggunaan.namaBarang);
     try {
         if (searchBarang.data[0].penggunaSaatIni === null) {
+            dataPenggunaan.kondisiAwal = searchBarang.data[0].kondisi;
             await Penggunaan.create(dataPenggunaan);
             await updateBarang(dataPenggunaan.namaBarang, { penggunaSaatIni: dataPenggunaan.pengguna });
             if (!Penggunaan) {
@@ -62,22 +57,34 @@ async function createPenggunaan(dataPenggunaan) {
         };
     }
 }
-async function updatePenggunaan(id, dataPenggunaan) {
+
+async function selesaikanPenggunaan(id, dataPenggunaan) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataPenggunaan.updatedAt = currentTime;
+    const pengguna = await Penggunaan.findById(id);
+    const barang = await getBarang(pengguna.namaBarang);
     try {
-        const update = await Penggunaan.updateOne({
-            _id: id
-        }, dataPenggunaan);
-        if (!update) {
-            throw new Error('Gagal memperbarui Penggunaan', );
+        if(dataPenggunaan.kondisiPengembalian !== null){
+            const kondisiKembali = dataPenggunaan.kondisiPengembalian.toUpperCase();
+            const histori = {
+                namaBarang: barang.data[0].namaBarang,
+                pengguna: barang.data[0].penggunaSaatIni,
+                tanggalMulaiPenggunaan: pengguna.tanggalMulaiPenggunaan,
+                tanggalSelesaiPenggunaan: currentTime,
+                kondisiAwal: barang.data[0].kondisi,
+                kondisiPengembalian: kondisiKembali
+            };
+            createHistoriPenggunaan(histori);
+            await updateBarang(pengguna.namaBarang, { penggunaSaatIni: null, kondisi: kondisiKembali});
+            await Penggunaan.deleteOne({_id: id});
+            return {
+                status: 200,
+                data: dataPenggunaan,
+            };
+        }else{
+            throw new Error('Kondisi pengembalian harus diisi!');
         }
-        return {
-            status: 200,
-            data: dataPenggunaan,
-        };
     } catch (error) {
         return {
             status: 500,
@@ -85,27 +92,9 @@ async function updatePenggunaan(id, dataPenggunaan) {
         };
     }
 }
-async function deletePenggunaan(id) {
-    try {
-        await Penggunaan.deleteOne({
-            _id: id
-        });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus Penggunaan'
-        };
-    } catch (error) {
-        return {
-            status: 500,
-            message: 'Gagal menghapus Penggunaan'
-        };
-    }
-}
 
 module.exports = {
     fetchPenggunaan,
-    getPenggunaan,
     createPenggunaan,
-    updatePenggunaan,
-    deletePenggunaan,
+    selesaikanPenggunaan,
 };
