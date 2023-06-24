@@ -31,11 +31,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
             });
         token = auth.body.data.token;
     });
-    afterAll(async () => {
-        await deleteUser();
-    });
     beforeEach(async () => {
-        await deleteKaryawan();
         await insertKaryawan();
     });
     afterEach(async () => {
@@ -121,6 +117,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteUser();
         await disconnect();
     });
 });

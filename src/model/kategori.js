@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-  username: {
+  namaKategori: {
     type: String,
     required: true,
     unique: true
   },
-  password: String,
-  name: String,
+  createdAt: Date,
+  updatedAt: Date,
 });
 
-module.exports = mongoose.model('users', schema);
+module.exports = mongoose.model('Kategori', schema)

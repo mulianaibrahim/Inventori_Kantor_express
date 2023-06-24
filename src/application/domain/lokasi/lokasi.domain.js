@@ -1,4 +1,5 @@
 const Lokasi = require('../../../model/lokasi');
+const Barang = require('../../../model/barang');
 
 async function searchLokasi(namaLokasi){
     const response = await Lokasi.find({namaLokasi: namaLokasi});
@@ -31,7 +32,7 @@ async function getLokasi(id) {
         const response = await Lokasi.findOne({
             _id: id
         });
-        if(response === null){
+        if(!response){
             throw new Error();
         }
         return {
@@ -57,9 +58,8 @@ async function createLokasi(dataLokasi) {
         if(search.status === 200){
             throw new Error('Nama lokasi penyimpanan sudah ada');
         }
-        const create = new Lokasi(dataLokasi);
-        const data = await create.save();
-        if (!data) {
+        await Lokasi.create(dataLokasi);
+        if (!Lokasi) {
             throw new Error("Gagal menambahkan lokasi penyimpanan")
         }
         return {
@@ -102,17 +102,24 @@ async function updateLokasi(id, dataLokasi) {
 }
 async function deleteLokasi(id) {
     try {
-        await Lokasi.deleteOne({
-            _id: id
+        const barang = await Barang.findOne({
+            lokasi: id
         });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus lokasi penyimpanan'
-        };
+        if(!barang){
+            await Lokasi.deleteOne({
+                _id: id
+            });
+            return {
+                status: 200,
+                message: 'Berhasil menghapus lokasi penyimpanan'
+            };
+        }else{
+            throw new Error(`Tidak dapat di hapus. ${barang.namaBrang} sedang disimpan di tempat penyimpanan ini.`);
+        }
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus lokasi penyimpanan'
+            message: error.message
         };
     }
 }

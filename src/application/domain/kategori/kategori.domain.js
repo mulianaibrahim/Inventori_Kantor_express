@@ -1,4 +1,5 @@
 const Kategori = require('../../../model/kategori');
+const Barang = require('../../../model/barang');
 
 async function searchKategori(namaKategori){
     const response = await Kategori.find({namaKategori: namaKategori});
@@ -31,7 +32,7 @@ async function getKategori(id) {
         const response = await Kategori.findOne({
             _id: id
         });
-        if(response === null){
+        if(!response){
             throw new Error();
         }
         return {
@@ -57,9 +58,9 @@ async function createKategori(dataKategori) {
         if(search.status === 200){
             throw new Error('Kategori sudah ada');
         }
-        const create = new Kategori(dataKategori);
-        const data = await create.save();
-        if (!data) {
+        await Kategori.create(dataKategori);
+
+        if (!Kategori) {
             throw new Error("Gagal menambahkan kategori")
         }
         return {
@@ -102,17 +103,24 @@ async function updateKategori(id, dataKategori) {
 }
 async function deleteKategori(id) {
     try {
-        await Kategori.deleteOne({
-            _id: id
+        const barang = await Barang.findOne({
+            kategori: id
         });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus kategori'
-        };
+        if(!barang){
+            await Kategori.deleteOne({
+                _id: id
+            });
+            return {
+                status: 200,
+                message: 'Berhasil menghapus kategori'
+            };
+        }else{
+            throw new Error(`Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`);
+        }
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus kategori'
+            message: error.message
         };
     }
 }

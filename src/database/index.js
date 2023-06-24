@@ -7,9 +7,16 @@ const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 
 async function connect() {
-  await mongoose.connect(
-    `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`
-  );
+  if(DB_USERNAME){
+    await mongoose.connect(
+      `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authMechanism=DEFAULT`
+      );
+  }else{
+    await mongoose.connect(
+      `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`
+      );
+  }
+    
 
   const db = mongoose.connection;
 

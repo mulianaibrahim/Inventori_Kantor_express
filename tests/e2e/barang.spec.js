@@ -10,9 +10,11 @@ const {
     deleteBarang
 } = require('../fixtures/barang');
 const {
+    insertKategori,
     deleteKategori
 } = require('../fixtures/kategori');
 const {
+    insertLokasi,
     deleteLokasi
 } = require('../fixtures/lokasi');
 const {
@@ -35,29 +37,16 @@ describe('tests/e2e/barang.spec.js', () => {
                 password: data.password
             });
         token = auth.body.data.token;
-        await supertest(app)
-            .post('/kategori')
-            .send({
-                namaKategori: 'kategori1',
-            })
-            .set('Authorization', token);
-        await supertest(app)
-            .post('/lokasi')
-            .send({
-                namaLokasi: 'lokasi1',
-            })
-            .set('Authorization', token);
-    });
-    afterAll(async () => {
-        await deleteKategori();
-        await deleteUser();
     });
     beforeEach(async () => {
-        await deleteBarang();
+        await insertKategori();
+        await insertLokasi();
         await insertBarang();
     });
     afterEach(async () => {
         await deleteBarang();
+        await deleteKategori();
+        await deleteLokasi();
     });
 
     describe('GET /barang', () => {
@@ -74,52 +63,52 @@ describe('tests/e2e/barang.spec.js', () => {
                 .post('/barang')
                 .send({
                     namaBarang: "barang 1",
-                    kategori: "kategori1",
+                    kategori: "64871289c0c87723dd4a18f0",
                     tanggalPerolehan: "2022-05-02",
                     hargaPerolehan: 100000,
                     masaGuna: "12 bulan",
                     kondisi: "baik",
-                    lokasi: "lokasi1",
+                    lokasi: "64871289c0c87723dd4a18f0",
                 })
                 .set('Authorization', token);
             expect(barang.statusCode).toBe(200);
             expect(barang.body.data.namaBarang).toBe('BARANG 1');
-            expect(barang.body.data.kategori).toBe('KATEGORI1');
+            expect(barang.body.data.kategori).toBe('64871289c0c87723dd4a18f0');
             expect(barang.body.data.tanggalPerolehan).toBe('2022-05-02');
             expect(barang.body.data.hargaPerolehan).toBe(100000);
             expect(barang.body.data.masaGuna).toBe('12 BULAN');
             expect(barang.body.data.kondisi).toBe('BAIK');
-            expect(barang.body.data.lokasi).toBe('LOKASI1');
+            expect(barang.body.data.lokasi).toBe('64871289c0c87723dd4a18f0');
+            expect(barang.body.data.penggunaSaatIni).toBe(null);
             expect(barang.body.data).toHaveProperty('kodeBarang');
-            expect(barang.body.data).toHaveProperty('penggunaSaatIni');
         });
         it('should return error if kategori missing when data inserted', async () => {
             const kategori = await supertest(app)
                 .post('/barang')
                 .send({
                     namaBarang: "barang 1",
-                    kategori: "kategori 16",
+                    kategori: "6486ef6fdc1c04hc3458c1d54",
                     tanggalPerolehan: "2022-05-02",
                     hargaPerolehan: 100000,
                     masaGuna: "12 bulan",
                     kondisi: "baik",
-                    lokasi: "lokasi1",
+                    lokasi: "64871289c0c87723dd4a18f0",
                 })
                 .set('Authorization', token);
             expect(kategori.statusCode).toBe(500);
             expect(kategori.body.message).toBe('Kategori tersebut tidak ada');
         });
-        it('should return error if lokasi barang missing when data inserted', async () => {
+        it('should return error if lokasi penyimpanan missing when data inserted', async () => {
             const kategori = await supertest(app)
                 .post('/barang')
                 .send({
                     namaBarang: "barang 1",
-                    kategori: "kategori1",
+                    kategori: "6486ef78dc1c04f730a2c1d2",
                     tanggalPerolehan: "2022-05-02",
                     hargaPerolehan: 100000,
                     masaGuna: "12 bulan",
                     kondisi: "baik",
-                    lokasi: "lokasi 12",
+                    lokasi: "6486ef6fdb1b87f73458c1b6",
                 })
                 .set('Authorization', token);
             expect(kategori.statusCode).toBe(500);
@@ -132,24 +121,24 @@ describe('tests/e2e/barang.spec.js', () => {
                 .get('/barang/64871282407585f33503200c')
                 .set('Authorization', token);
             expect(barang.statusCode).toBe(200);
-            expect(barang.body.data).toHaveProperty('namaBarang');
-            expect(barang.body.data).toHaveProperty('kategori');
-            expect(barang.body.data).toHaveProperty('tanggalPerolehan');
-            expect(barang.body.data).toHaveProperty('hargaPerolehan');
-            expect(barang.body.data).toHaveProperty('masaGuna');
-            expect(barang.body.data).toHaveProperty('kondisi');
-            expect(barang.body.data).toHaveProperty('lokasi');
-            expect(barang.body.data).toHaveProperty('penggunaSaatIni');
-            expect(barang.body.data).toHaveProperty('kodeBarang');
-            expect(barang.body.data.namaBarang).toBe('TES');
-            expect(barang.body.data.kategori).toBe('kategori1');
-            expect(barang.body.data.tanggalPerolehan).toBe('2022-05-02T00:00:00.000Z');
-            expect(barang.body.data.hargaPerolehan).toBe(100000);
-            expect(barang.body.data.masaGuna).toBe('12 BULAN');
-            expect(barang.body.data.kondisi).toBe('BAIK');
-            expect(barang.body.data.lokasi).toBe('RAK ATAS');
-            expect(barang.body.data.penggunaSaatIni).toBe('-');
-            expect(barang.body.data.kodeBarang).toBe('544244');
+            expect(barang.body.data[0]).toHaveProperty('namaBarang');
+            expect(barang.body.data[0]).toHaveProperty('kategori');
+            expect(barang.body.data[0]).toHaveProperty('tanggalPerolehan');
+            expect(barang.body.data[0]).toHaveProperty('hargaPerolehan');
+            expect(barang.body.data[0]).toHaveProperty('masaGuna');
+            expect(barang.body.data[0]).toHaveProperty('kondisi');
+            expect(barang.body.data[0]).toHaveProperty('lokasi');
+            expect(barang.body.data[0]).toHaveProperty('penggunaSaatIni');
+            expect(barang.body.data[0]).toHaveProperty('kodeBarang');
+            expect(barang.body.data[0].namaBarang).toBe('TES');
+            expect(barang.body.data[0].kategori).toBe('KATEGORI2');
+            expect(barang.body.data[0].tanggalPerolehan).toBe('2022-05-02T00:00:00.000Z');
+            expect(barang.body.data[0].hargaPerolehan).toBe(100000);
+            expect(barang.body.data[0].masaGuna).toBe('12 BULAN');
+            expect(barang.body.data[0].kondisi).toBe('BAIK');
+            expect(barang.body.data[0].lokasi).toBe('lokasi3');
+            expect(barang.body.data[0].penggunaSaatIni).toBe(null);
+            expect(barang.body.data[0].kodeBarang).toBe('544244');
         });
         it('should return not found error when data is not exists', async () => {
             const barang = await supertest(app)
@@ -167,12 +156,12 @@ describe('tests/e2e/barang.spec.js', () => {
                 .put('/barang/64871282407585f33503200c')
                 .send({
                     namaBarang: "barang 1 edit",
-                    kategori: "kategori1",
+                    kategori: "64871289c0c87723dd4a18f0",
                     tanggalPerolehan: "2022-05-02",
                     hargaPerolehan: 100000,
                     masaGuna: "12 bulan",
                     kondisi: "baik",
-                    lokasi: "lokasi1",
+                    lokasi: "64871289c0c87723dd4a18f0",
                 })
                 .set('Authorization', token);
             expect(barang.status).toBe(200);
@@ -183,43 +172,41 @@ describe('tests/e2e/barang.spec.js', () => {
             expect(barang.body.data).toHaveProperty('masaGuna');
             expect(barang.body.data).toHaveProperty('kondisi');
             expect(barang.body.data).toHaveProperty('lokasi');
-            expect(barang.body.data).toHaveProperty('penggunaSaatIni');
             expect(barang.body.data.namaBarang).toBe('BARANG 1 EDIT');
-            expect(barang.body.data.kategori).toBe('KATEGORI1');
+            expect(barang.body.data.kategori).toBe('64871289c0c87723dd4a18f0');
             expect(barang.body.data.tanggalPerolehan).toBe('2022-05-02');
             expect(barang.body.data.hargaPerolehan).toBe(100000);
             expect(barang.body.data.masaGuna).toBe('12 BULAN');
             expect(barang.body.data.kondisi).toBe('BAIK');
-            expect(barang.body.data.lokasi).toBe('LOKASI1');
-            expect(barang.body.data.penggunaSaatIni).toBe('-');
+            expect(barang.body.data.lokasi).toBe('64871289c0c87723dd4a18f0');
         });
         it('should return error if kategori missing when data inserted', async () => {
             const kategori = await supertest(app)
                 .put('/barang/64871282407585f33503200c')
                 .send({
                     namaBarang: "barang 1 edit",
-                    kategori: "kategori 16",
+                    kategori: "6486ef6fdb1b04f71788c1d0",
                     tanggalPerolehan: "2022-05-02",
                     hargaPerolehan: 100000,
                     masaGuna: "12 bulan",
                     kondisi: "baik",
-                    lokasi: "lokasi1",
+                    lokasi: "64871289c0c87723dd4a18f0",
                 })
                 .set('Authorization', token);
             expect(kategori.statusCode).toBe(500);
             expect(kategori.body.message).toBe('Kategori tersebut tidak ada');
         });
-        it('should return error if lokasi barang missing when data inserted', async () => {
+        it('should return error if lokasi penyimpanan missing when data inserted', async () => {
             const kategori = await supertest(app)
                 .put('/barang/64871282407585f33503200c')
                 .send({
                     namaBarang: "barang 1",
-                    kategori: "kategori1",
+                    kategori: "64871289c0c87723dd4a18f0",
                     tanggalPerolehan: "2022-05-02",
                     hargaPerolehan: 100000,
                     masaGuna: "12 bulan",
                     kondisi: "baik",
-                    lokasi: "lokasi16",
+                    lokasi: "6486ef6fdb1jldg73458c1d0",
                 })
                 .set('Authorization', token);
             expect(kategori.statusCode).toBe(500);
@@ -238,6 +225,7 @@ describe('tests/e2e/barang.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteUser();
         await disconnect();
     });
 });
