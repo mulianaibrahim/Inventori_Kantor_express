@@ -22,6 +22,8 @@ describe('tests/e2e/histori.spec.js', () => {
         name: 'Tester',
     };
     beforeAll(async () => {
+        await deleteHistoriPenggunaan();
+        await insertHistoriPenggunaan();
         await supertest(app).post('/register').send(data);
         const auth = await supertest(app)
             .post('/login')
@@ -30,12 +32,6 @@ describe('tests/e2e/histori.spec.js', () => {
                 password: data.password
             });
         token = auth.body.data.token;
-    });
-    beforeEach(async () => {
-        await insertHistoriPenggunaan();
-    });
-    afterEach(async () => {
-        await deleteHistoriPenggunaan();
     });
 
     describe('GET /historiPenggunaan', () => {
@@ -47,6 +43,7 @@ describe('tests/e2e/histori.spec.js', () => {
         });
     });
     afterAll(async () => {
+        await deleteHistoriPenggunaan();
         await deleteUser();
         await disconnect();
     });

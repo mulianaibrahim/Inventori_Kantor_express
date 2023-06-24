@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --ext js,json,yaml index.js",
     "test": "jest --detectOpenHandles",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

@@ -139,20 +139,7 @@ async function updateBarang(id, dataBarang) {
     currentTime.setMinutes(currentTime.getMinutes() + offset);
     dataBarang.updatedAt = currentTime;
     try {
-        if (dataBarang.hasOwnProperty('kategori') && dataBarang.hasOwnProperty('lokasi')) {
-            const kategori = await getKategori(dataBarang.kategori);
-            const lokasi = await getLokasi(dataBarang.lokasi);
-            if (kategori.status !== 200) {
-                throw new Error('Kategori tersebut tidak ada');
-            }
-            if (lokasi.status !== 200) {
-                throw new Error('Lokasi penyimpanan tersebut tidak ada');
-            }
-        }
-        const update = await Barang.findByIdAndUpdate(id, dataBarang);
-        if (!update) {
-            throw new Error('Gagal memperbarui Barang', );
-        }
+        await Barang.findByIdAndUpdate(id, dataBarang);
         return {
             status: 200,
             data: dataBarang,
@@ -160,7 +147,7 @@ async function updateBarang(id, dataBarang) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal memperbarui data barang!"
         };
     }
 }
