@@ -76,7 +76,7 @@ async function selesaikanPenggunaan(id, dataPenggunaan) {
                 kondisiPengembalian: kondisiKembali
             };
             createHistoriPenggunaan(histori);
-            await updateBarang(pengguna.namaBarang, { penggunaSaatIni: null, kondisi: kondisiKembali});
+            await updateBarang(barang.data[0]._id, { penggunaSaatIni: null, kondisi: kondisiKembali});
             await Penggunaan.deleteOne({_id: id});
             return {
                 status: 200,

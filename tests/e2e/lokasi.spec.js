@@ -21,6 +21,8 @@ describe('tests/e2e/lokasi.spec.js', () => {
         name: 'Tester',
     };
     beforeAll(async () => {
+        await deleteLokasi();
+        await insertLokasi();
         await supertest(app).post('/register').send(data);
         const auth = await supertest(app)
             .post('/login')
@@ -29,12 +31,6 @@ describe('tests/e2e/lokasi.spec.js', () => {
                 password: data.password
             });
         token = auth.body.data.token;
-    });
-    beforeEach(async () => {
-        await insertLokasi();
-    });
-    afterEach(async () => {
-        await deleteLokasi();
     });
 
     describe('GET /lokasi', () => {
@@ -120,6 +116,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteLokasi();
         await deleteUser();
         await disconnect();
     });

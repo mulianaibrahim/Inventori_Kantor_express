@@ -114,7 +114,7 @@ async function deleteLokasi(id) {
                 message: 'Berhasil menghapus lokasi penyimpanan'
             };
         }else{
-            throw new Error(`Tidak dapat di hapus. ${barang.namaBrang} sedang disimpan di tempat penyimpanan ini.`);
+            throw new Error(`Tidak dapat di hapus. ${barang.namaBarang} sedang disimpan di tempat penyimpanan ini.`);
         }
     } catch (error) {
         return {

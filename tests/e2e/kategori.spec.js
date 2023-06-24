@@ -21,6 +21,8 @@ describe('tests/e2e/kategori.spec.js', () => {
         name: 'Tester',
     };
     beforeAll(async () => {
+        await deleteKategori();
+        await insertKategori();
         await supertest(app).post('/register').send(data);
         const auth = await supertest(app)
             .post('/login')
@@ -29,12 +31,6 @@ describe('tests/e2e/kategori.spec.js', () => {
                 password: data.password
             });
         token = auth.body.data.token;
-    });
-    beforeEach(async () => {
-        await insertKategori();
-    });
-    afterEach(async () => {
-        await deleteKategori();
     });
 
     describe('GET /kategori', () => {
@@ -120,6 +116,7 @@ describe('tests/e2e/kategori.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteKategori();
         await deleteUser();
         await disconnect();
     });
