@@ -32,7 +32,7 @@ async function getLokasi(id) {
         const response = await Lokasi.findOne({
             _id: id
         });
-        if(response === null){
+        if(!response){
             throw new Error();
         }
         return {
@@ -102,7 +102,7 @@ async function updateLokasi(id, dataLokasi) {
 }
 async function deleteLokasi(id) {
     try {
-        const barang = await Barang.find({
+        const barang = await Barang.findOne({
             lokasi: id
         });
         if(!barang){
