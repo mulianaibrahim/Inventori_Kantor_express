@@ -17,7 +17,7 @@ env:
 jobs:
   checking-feature:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 3
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
         run: until curl -v http://localhost:3000  > /dev/null; do sleep 1; done
   test-feature:
     runs-on: ubuntu-latest
-    timeout-minutes: 1
+    timeout-minutes: 3
     needs: checking-feature
     steps:
       - name: checkout repository
