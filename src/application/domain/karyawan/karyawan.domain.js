@@ -1,4 +1,5 @@
 const Karyawan = require('../../../model/karyawan');
+const Barang = require('../../../model/barang');
 
 async function searchKaryawan(namaKaryawan){
     const response = await Karyawan.find({namaKaryawan: namaKaryawan});
@@ -31,7 +32,7 @@ async function getKaryawan(id) {
         const response = await Karyawan.findOne({
             _id: id
         });
-        if(response === null){
+        if(!response){
             throw new Error();
         }
         return {
@@ -57,9 +58,8 @@ async function createKaryawan(dataKaryawan) {
         if(search.status === 200){
             throw new Error('Karyawan sudah ada');
         }
-        const create = new Karyawan(dataKaryawan);
-        const data = await create.save();
-        if (!data) {
+        await Karyawan.create(dataKaryawan);
+        if (!Karyawan) {
             throw new Error("Gagal menambahkan karyawan")
         }
         return {
@@ -102,17 +102,25 @@ async function updateKaryawan(id, dataKaryawan) {
 }
 async function deleteKaryawan(id) {
     try {
-        await Karyawan.deleteOne({
-            _id: id
+        const barang = await Barang.findOne({
+            penggunaSaatIni: id
         });
-        return {
-            status: 200,
-            message: 'Berhasil menghapus karyawan'
-        };
+        if(!barang){
+            await Karyawan.deleteOne({
+                _id: id
+            });
+            return {
+                status: 200,
+                message: 'Berhasil menghapus karyawan'
+            };
+        }else{
+            throw new Error(`Tidak dapat menghapus karyawan. Karywan tersebut sedang menggunakan barang ${barang.namaBarang}`)
+        }
+        
     } catch (error) {
         return {
             status: 500,
-            message: 'Gagal menghapus karyawan'
+            message: error.message
         };
     }
 }

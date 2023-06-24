@@ -30,11 +30,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
             });
         token = auth.body.data.token;
     });
-    afterAll(async () => {
-        await deleteUser();
-    });
     beforeEach(async () => {
-        await deleteLokasi();
         await insertLokasi();
     });
     afterEach(async () => {
@@ -124,6 +120,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteUser();
         await disconnect();
     });
 });
