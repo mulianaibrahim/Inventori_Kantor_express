@@ -14,7 +14,7 @@ async function searchKaryawan(namaKaryawan){
     } catch (error) {
         return {
             status: 404,
-            message: 'Data kategori tidak ada!',
+            message: 'Data karyawan tidak ada!',
         }
     }
 }

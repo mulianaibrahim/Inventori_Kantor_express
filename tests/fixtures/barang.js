@@ -1,4 +1,16 @@
 const Barang = require('../../src/model/barang');
+const {
+    insertKategori,
+    deleteKategori
+} = require('./kategori');
+const {
+    insertKaryawan,
+    deleteKaryawan
+} = require('./karyawan');
+const {
+    insertLokasi,
+    deleteLokasi
+} = require('./lokasi');
 const barangs = [{
         _id: '6486ef6fdc1c04f730a2c1d0',
         kodeBarang: '123456',
@@ -53,17 +65,27 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "64871282407585f33503200c",
-        penggunaSaatIni: "64871282407585f33503200c"
+        penggunaSaatIni: "6486ef6fdc1c04f730a2c1d0"
     },
 ];
 async function insertBarang() {
+    await insertKaryawan();
+    await insertKategori();
+    await insertLokasi();
     await Barang.insertMany(barangs);
 }
 async function deleteBarang() {
     await Barang.deleteMany({});
+    await deleteKaryawan();
+    await deleteKategori();
+    await deleteLokasi();
+}
+async function updateBarang() {
+    Barang.findByIdAndDelete(barangs[4]._id);
 }
 
 module.exports = {
     insertBarang,
     deleteBarang,
+    updateBarang
 };
