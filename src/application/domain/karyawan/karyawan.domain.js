@@ -32,7 +32,7 @@ async function getKaryawan(id) {
         const response = await Karyawan.findOne({
             _id: id
         });
-        if(response === null){
+        if(!response){
             throw new Error();
         }
         return {
@@ -102,7 +102,7 @@ async function updateKaryawan(id, dataKaryawan) {
 }
 async function deleteKaryawan(id) {
     try {
-        const barang = await Barang.find({
+        const barang = await Barang.findOne({
             penggunaSaatIni: id
         });
         if(!barang){

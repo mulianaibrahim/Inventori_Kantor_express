@@ -30,11 +30,7 @@ describe('tests/e2e/kategori.spec.js', () => {
             });
         token = auth.body.data.token;
     });
-    afterAll(async () => {
-        await deleteUser();
-    });
     beforeEach(async () => {
-        await deleteKategori();
         await insertKategori();
     });
     afterEach(async () => {
@@ -124,6 +120,7 @@ describe('tests/e2e/kategori.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteUser();
         await disconnect();
     });
 });

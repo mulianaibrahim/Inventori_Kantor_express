@@ -35,7 +35,7 @@ async function createPenggunaan(dataPenggunaan) {
     dataPenggunaan.createdAt = currentTime;
     const searchBarang = await getBarang(dataPenggunaan.namaBarang);
     try {
-        if (searchBarang.data[0].penggunaSaatIni === null) {
+        if (searchBarang.status === 200 && searchBarang.data[0].penggunaSaatIni === null) {
             dataPenggunaan.kondisiAwal = searchBarang.data[0].kondisi;
             await Penggunaan.create(dataPenggunaan);
             await updateBarang(dataPenggunaan.namaBarang, { penggunaSaatIni: dataPenggunaan.pengguna });

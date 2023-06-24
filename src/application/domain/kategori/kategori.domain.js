@@ -32,7 +32,7 @@ async function getKategori(id) {
         const response = await Kategori.findOne({
             _id: id
         });
-        if(response === null){
+        if(!response){
             throw new Error();
         }
         return {
@@ -103,7 +103,7 @@ async function updateKategori(id, dataKategori) {
 }
 async function deleteKategori(id) {
     try {
-        const barang = await Barang.find({
+        const barang = await Barang.findOne({
             kategori: id
         });
         if(!barang){
