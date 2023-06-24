@@ -6,10 +6,15 @@ const DB_NAME = process.env.DB_NAME;
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 
+console.log(
+  'CONNECTION: ',
+  `mongodb://${DB_USERNAME}`
+);
+
 async function connect() {
-  if(DB_USERNAME){
+  if(Boolean(DB_USERNAME)){
     await mongoose.connect(
-      `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authMechanism=DEFAULT`
+      `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`
       );
   }else{
     await mongoose.connect(
