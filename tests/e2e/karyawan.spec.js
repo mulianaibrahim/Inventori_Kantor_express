@@ -22,6 +22,8 @@ describe('tests/e2e/karyawan.spec.js', () => {
         name: 'Tester',
     };
     beforeAll(async () => {
+        await deleteKaryawan();
+        await insertKaryawan();
         await supertest(app).post('/register').send(data);
         const auth = await supertest(app)
             .post('/login')
@@ -30,12 +32,6 @@ describe('tests/e2e/karyawan.spec.js', () => {
                 password: data.password
             });
         token = auth.body.data.token;
-    });
-    beforeEach(async () => {
-        await insertKaryawan();
-    });
-    afterEach(async () => {
-        await deleteKaryawan();
     });
 
     describe('GET /karyawan', () => {
@@ -109,7 +105,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
     describe('DELETE /karyawan/:id', () => {
         it('should delete one karyawan', async () => {
             const karyawan = await supertest(app).delete(
-                '/karyawan/64871282407585f33503200c'
+                '/karyawan/64871289c0c87723dd4a18f0'
             ).set('Authorization', token);
             expect(karyawan.status).toBe(200);
             expect(karyawan.body.message).toBe('Berhasil menghapus karyawan');
@@ -117,6 +113,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
     });
 
     afterAll(async () => {
+        await deleteKaryawan();
         await deleteUser();
         await disconnect();
     });

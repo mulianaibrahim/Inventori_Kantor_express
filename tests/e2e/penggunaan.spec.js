@@ -6,22 +6,6 @@ const {
     disconnect
 } = require('../../src/database');
 const {
-    insertKategori,
-    deleteKategori
-} = require('../fixtures/kategori');
-const {
-    insertLokasi,
-    deleteLokasi
-} = require('../fixtures/lokasi');
-const {
-    insertKaryawan,
-    deleteKaryawan
-} = require('../fixtures/karyawan');
-const {
-    insertBarang,
-    deleteBarang
-} = require('../fixtures/barang');
-const {
     insertPenggunaan,
     deletePenggunaan
 } = require('../fixtures/penggunaan');
@@ -38,6 +22,8 @@ describe('tests/e2e/penggunaan.spec.js', () => {
         name: 'Tester',
     };
     beforeAll(async () => {
+        await deletePenggunaan();
+        await insertPenggunaan();
         await supertest(app).post('/register').send(data);
         const auth = await supertest(app)
             .post('/login')
@@ -47,21 +33,6 @@ describe('tests/e2e/penggunaan.spec.js', () => {
             });
         token = auth.body.data.token;
     });
-    beforeEach(async () => {
-        await insertKaryawan();
-        await insertKategori();
-        await insertLokasi();
-        await insertBarang();
-        await insertPenggunaan();
-    });
-    afterEach(async () => {
-        await deletePenggunaan();
-        await deleteBarang();
-        await deleteKaryawan();
-        await deleteKategori();
-        await deleteLokasi();
-    });
-
     describe('GET /penggunaan', () => {
         it('should return statusCode 200 when request success', async () => {
             const karyawan = await supertest(app)
@@ -111,7 +82,7 @@ describe('tests/e2e/penggunaan.spec.js', () => {
         });
         it('should return error kondisiPengembalian must be filled', async () => {
             const penggunaan = await supertest(app)
-                .patch('/penggunaan/6486ef6fdc1c04f730a2c1d0')
+                .patch('/penggunaan/6486ef6fdc1c04f730a2c1d1')
                 .send({
                     kondisiPengembalian: null,
                 }).set('Authorization', token);
@@ -120,6 +91,7 @@ describe('tests/e2e/penggunaan.spec.js', () => {
         });
     });
     afterAll(async () => {
+        await deletePenggunaan();
         await deleteUser();
         await disconnect();
     });
