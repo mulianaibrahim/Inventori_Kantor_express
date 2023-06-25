@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --ext js,json,yaml index.js",
+    "dev": "nodemon --ext js,json,yaml,env index.js",
     "test": "jest --detectOpenHandles",
-    "test:coverage": "jest --coverage --detectOpenHandles"
+    "test:coverage": "jest --coverage --detectOpenHandles",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
