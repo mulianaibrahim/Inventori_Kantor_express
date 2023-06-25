@@ -1,8 +1,8 @@
-const Karyawan = require('../../../model/karyawan');
-const Barang = require('../../../model/barang');
+const Lokasi = require('../../model/lokasi');
+const Barang = require('../../model/barang');
 
-async function searchKaryawan(namaKaryawan){
-    const response = await Karyawan.find({namaKaryawan: namaKaryawan});
+async function searchLokasi(namaLokasi){
+    const response = await Lokasi.find({namaLokasi: namaLokasi});
     try {
         if(response.length < 1){
             throw new Error();
@@ -14,22 +14,22 @@ async function searchKaryawan(namaKaryawan){
     } catch (error) {
         return {
             status: 404,
-            message: 'Data karyawan tidak ada!',
+            message: 'Data lokasi penyimpanan tidak ada!',
         }
     }
 }
 
-async function fetchKaryawan() {
-    const response = await Karyawan.find({});
+async function fetchLokasi() {
+    const response = await Lokasi.find({});
     return {
         status: 200,
         data: response,
     };
 }
 
-async function getKaryawan(id) {
+async function getLokasi(id) {
     try {
-        const response = await Karyawan.findOne({
+        const response = await Lokasi.findOne({
             _id: id
         });
         if(!response){
@@ -42,29 +42,29 @@ async function getKaryawan(id) {
     } catch (error) {
         return {
             status: 404,
-            message: 'Karyawan tidak ditemukan'
+            message: 'Lokasi penyimpanan tidak ditemukan'
         };
     }
 }
 
-async function createKaryawan(dataKaryawan) {
+async function createLokasi(dataLokasi) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKaryawan.createdAt = currentTime;
-    dataKaryawan.updatedAt = currentTime;
-    const search = await searchKaryawan(dataKaryawan.namaKaryawan);
+    dataLokasi.createdAt = currentTime;
+    dataLokasi.updatedAt = currentTime;
+    const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
         if(search.status === 200){
-            throw new Error('Karyawan sudah ada');
+            throw new Error('Nama lokasi penyimpanan sudah ada');
         }
-        await Karyawan.create(dataKaryawan);
-        if (!Karyawan) {
-            throw new Error("Gagal menambahkan karyawan")
+        await Lokasi.create(dataLokasi);
+        if (!Lokasi) {
+            throw new Error("Gagal menambahkan lokasi penyimpanan")
         }
         return {
             status: 200,
-            data: dataKaryawan,
+            data: dataLokasi,
         };
     } catch (error) {
         return {
@@ -73,25 +73,25 @@ async function createKaryawan(dataKaryawan) {
         };
     }
 }
-async function updateKaryawan(id, dataKaryawan) {
+async function updateLokasi(id, dataLokasi) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKaryawan.updatedAt = currentTime;
-    const search = await searchKaryawan(dataKaryawan.namaKaryawan);
+    dataLokasi.updatedAt = currentTime;
+    const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
         if(search.status === 200){
-            throw new Error('Karyawan sudah ada');
+            throw new Error('Nama lokasi penyimpanan sudah ada');
         }
-        const update = await Karyawan.updateOne({
+        const update = await Lokasi.updateOne({
             _id: id
-        }, dataKaryawan);
+        }, dataLokasi);
         if (!update) {
-            throw new Error('Gagal memperbarui karyawan', );
+            throw new Error('Gagal memperbarui lokasi penyimpanan', );
         }
         return {
             status: 200,
-            data: dataKaryawan,
+            data: dataLokasi,
         };
     } catch (error) {
         return {
@@ -100,23 +100,22 @@ async function updateKaryawan(id, dataKaryawan) {
         };
     }
 }
-async function deleteKaryawan(id) {
+async function deleteLokasi(id) {
     try {
         const barang = await Barang.findOne({
-            penggunaSaatIni: id
+            lokasi: id
         });
         if(!barang){
-            await Karyawan.deleteOne({
+            await Lokasi.deleteOne({
                 _id: id
             });
             return {
                 status: 200,
-                message: 'Berhasil menghapus karyawan'
+                message: 'Berhasil menghapus lokasi penyimpanan'
             };
         }else{
-            throw new Error(`Tidak dapat menghapus karyawan. Karywan tersebut sedang menggunakan barang ${barang.namaBarang}`)
+            throw new Error(`Tidak dapat di hapus. ${barang.namaBarang} sedang disimpan di tempat penyimpanan ini.`);
         }
-        
     } catch (error) {
         return {
             status: 500,
@@ -126,9 +125,10 @@ async function deleteKaryawan(id) {
 }
 
 module.exports = {
-    fetchKaryawan,
-    getKaryawan,
-    createKaryawan,
-    updateKaryawan,
-    deleteKaryawan,
+    fetchLokasi,
+    getLokasi,
+    createLokasi,
+    updateLokasi,
+    deleteLokasi,
+    searchLokasi
 };

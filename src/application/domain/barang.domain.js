@@ -1,30 +1,24 @@
-const Barang = require('../../../model/barang');
+const Barang = require('../../model/barang');
 
 const {
     getKategori
-} = require('../kategori/kategori.domain');
+} = require('./kategori.domain');
 const {
     getLokasi
-} = require('../lokasi/lokasi.domain');
+} = require('./lokasi.domain');
 
-async function searchBarang(namaBarang) {
-    const response = await Barang.find({
-        namaBarang: namaBarang
-    });
-    try {
-        if (response.length < 1) {
-            throw new Error();
-        }
-        return {
-            status: 200,
-            data: response,
-        };
-    } catch (error) {
+async function searchBarang(keyValue) {
+    const response = await Barang.find(keyValue);
+    if(response.length === 0){
         return {
             status: 404,
-            message: 'Data barang tidak ada!',
-        }
+            message: "Barang tidak ditemukan",
+        };
     }
+    return {
+        status: 200,
+        data: response,
+    };
 }
 
 async function fetchBarang() {
@@ -192,4 +186,5 @@ module.exports = {
     createBarang,
     updateBarang,
     deleteBarang,
+    searchBarang
 };

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const User = require('../../../model/users');
+const User = require('../../model/users');
 
 const secret = 'very-secret';
 

@@ -4,7 +4,7 @@ const {
     createLokasi,
     updateLokasi,
     deleteLokasi
-} = require('../domain/lokasi/lokasi.domain');
+} = require('../domain/lokasi.domain');
 
 async function getAllLokasi(req, res) {
     const response = await fetchLokasi();

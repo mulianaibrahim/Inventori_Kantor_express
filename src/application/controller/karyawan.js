@@ -4,7 +4,7 @@ const {
     createKaryawan,
     updateKaryawan,
     deleteKaryawan
-} = require('../domain/karyawan/karyawan.domain');
+} = require('../domain/karyawan.domain');
 
 async function getAllKaryawan(req, res) {
     const response = await fetchKaryawan();

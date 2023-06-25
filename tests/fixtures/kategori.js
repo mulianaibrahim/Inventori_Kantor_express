@@ -25,6 +25,7 @@ async function deleteKategori() {
 }
 
 module.exports = {
+  kategoris,
   insertKategori,
   deleteKategori,
 };

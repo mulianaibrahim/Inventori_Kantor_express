@@ -17,6 +17,7 @@ async function deleteHistoriPenggunaan() {
 }
 
 module.exports = {
+    historis,
     insertHistoriPenggunaan,
     deleteHistoriPenggunaan,
 };

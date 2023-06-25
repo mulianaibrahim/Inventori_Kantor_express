@@ -1,4 +1,4 @@
-const HistoriPenggunaan = require('../../../model/historiPenggunaan');
+const HistoriPenggunaan = require('../../model/historiPenggunaan');
 
 async function fetchHistoriPenggunaan() {
     const response = await HistoriPenggunaan.find({});

@@ -25,6 +25,7 @@ async function deleteLokasi() {
 }
 
 module.exports = {
+  lokasis,
   insertLokasi,
   deleteLokasi,
 };

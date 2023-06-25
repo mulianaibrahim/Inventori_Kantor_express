@@ -1,8 +1,8 @@
-const Kategori = require('../../../model/kategori');
-const Barang = require('../../../model/barang');
+const Karyawan = require('../../model/karyawan');
+const Barang = require('../../model/barang');
 
-async function searchKategori(namaKategori){
-    const response = await Kategori.find({namaKategori: namaKategori});
+async function searchKaryawan(namaKaryawan){
+    const response = await Karyawan.find({namaKaryawan: namaKaryawan});
     try {
         if(response.length < 1){
             throw new Error();
@@ -14,22 +14,22 @@ async function searchKategori(namaKategori){
     } catch (error) {
         return {
             status: 404,
-            message: 'Data kategori tidak ada!',
+            message: 'Data karyawan tidak ada!',
         }
     }
 }
 
-async function fetchKategori() {
-    const response = await Kategori.find({});
+async function fetchKaryawan() {
+    const response = await Karyawan.find({});
     return {
         status: 200,
         data: response,
     };
 }
 
-async function getKategori(id) {
+async function getKaryawan(id) {
     try {
-        const response = await Kategori.findOne({
+        const response = await Karyawan.findOne({
             _id: id
         });
         if(!response){
@@ -42,30 +42,29 @@ async function getKategori(id) {
     } catch (error) {
         return {
             status: 404,
-            message: 'Kategori tidak ditemukan'
+            message: 'Karyawan tidak ditemukan'
         };
     }
 }
 
-async function createKategori(dataKategori) {
+async function createKaryawan(dataKaryawan) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKategori.createdAt = currentTime;
-    dataKategori.updatedAt = currentTime;
-    const search = await searchKategori(dataKategori.namaKategori);
+    dataKaryawan.createdAt = currentTime;
+    dataKaryawan.updatedAt = currentTime;
+    const search = await searchKaryawan(dataKaryawan.namaKaryawan);
     try {
         if(search.status === 200){
-            throw new Error('Kategori sudah ada');
+            throw new Error('Karyawan sudah ada');
         }
-        await Kategori.create(dataKategori);
-
-        if (!Kategori) {
-            throw new Error("Gagal menambahkan kategori")
+        await Karyawan.create(dataKaryawan);
+        if (!Karyawan) {
+            throw new Error("Gagal menambahkan karyawan")
         }
         return {
             status: 200,
-            data: dataKategori,
+            data: dataKaryawan,
         };
     } catch (error) {
         return {
@@ -74,25 +73,25 @@ async function createKategori(dataKategori) {
         };
     }
 }
-async function updateKategori(id, dataKategori) {
+async function updateKaryawan(id, dataKaryawan) {
     const currentTime = new Date();
     const offset = 420;
     currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKategori.updatedAt = currentTime;
-    const search = await searchKategori(dataKategori.namaKategori);
+    dataKaryawan.updatedAt = currentTime;
+    const search = await searchKaryawan(dataKaryawan.namaKaryawan);
     try {
         if(search.status === 200){
-            throw new Error('Kategori sudah ada');
+            throw new Error('Karyawan sudah ada');
         }
-        const update = await Kategori.updateOne({
+        const update = await Karyawan.updateOne({
             _id: id
-        }, dataKategori);
+        }, dataKaryawan);
         if (!update) {
-            throw new Error('Gagal memperbarui kategori', );
+            throw new Error('Gagal memperbarui karyawan', );
         }
         return {
             status: 200,
-            data: dataKategori,
+            data: dataKaryawan,
         };
     } catch (error) {
         return {
@@ -101,22 +100,23 @@ async function updateKategori(id, dataKategori) {
         };
     }
 }
-async function deleteKategori(id) {
+async function deleteKaryawan(id) {
     try {
         const barang = await Barang.findOne({
-            kategori: id
+            penggunaSaatIni: id
         });
         if(!barang){
-            await Kategori.deleteOne({
+            await Karyawan.deleteOne({
                 _id: id
             });
             return {
                 status: 200,
-                message: 'Berhasil menghapus kategori'
+                message: 'Berhasil menghapus karyawan'
             };
         }else{
-            throw new Error(`Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`);
+            throw new Error(`Tidak dapat menghapus karyawan. Karywan tersebut sedang menggunakan barang ${barang.namaBarang}`)
         }
+        
     } catch (error) {
         return {
             status: 500,
@@ -126,10 +126,9 @@ async function deleteKategori(id) {
 }
 
 module.exports = {
-    fetchKategori,
-    getKategori,
-    createKategori,
-    updateKategori,
-    deleteKategori,
-    searchKategori
+    fetchKaryawan,
+    getKaryawan,
+    createKaryawan,
+    updateKaryawan,
+    deleteKaryawan,
 };

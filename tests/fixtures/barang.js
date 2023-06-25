@@ -85,6 +85,7 @@ async function updateBarang() {
 }
 
 module.exports = {
+    barangs,
     insertBarang,
     deleteBarang,
     updateBarang

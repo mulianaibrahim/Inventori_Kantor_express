@@ -4,7 +4,7 @@ const {
     createBarang,
     updateBarang,
     deleteBarang
-} = require('../domain/barang/barang.domain');
+} = require('../domain/barang.domain');
 
 async function getAllBarang(req, res) {
     const response = await fetchBarang();

@@ -59,7 +59,7 @@ describe('tests/e2e/kategori.spec.js', () => {
                     namaKategori: 'KATEGORI2',
                 })
                 .set('Authorization', token);
-            expect(kategori.statusCode).toBe(500);
+            expect(kategori.statusCode).toBe(400);
             expect(kategori.body.message).toBe('Kategori sudah ada');
         });
     });
@@ -100,7 +100,7 @@ describe('tests/e2e/kategori.spec.js', () => {
                     namaKategori: 'KATEGORI2',
                 })
                 .set('Authorization', token);
-            expect(kategori.statusCode).toBe(500);
+            expect(kategori.statusCode).toBe(400);
             expect(kategori.body.message).toBe('Kategori sudah ada');
         });
     });

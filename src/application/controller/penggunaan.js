@@ -2,7 +2,7 @@ const {
     fetchPenggunaan,
     createPenggunaan,
     selesaikanPenggunaan
-} = require('../domain/penggunaan/penggunaan.domain');
+} = require('../domain/penggunaan.domain');
 
 async function getAllPenggunaan(req, res) {
     const response = await fetchPenggunaan();

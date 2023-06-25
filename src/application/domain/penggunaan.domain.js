@@ -1,12 +1,12 @@
-const Penggunaan = require('../../../model/penggunaan');
+const Penggunaan = require('../../model/penggunaan');
 const {
     getBarang,
     updateBarang
-} = require('../barang/barang.domain');
+} = require('./barang.domain');
 
 const {
     createHistoriPenggunaan
-} = require('../historiPenggunaan/historiPenggunaan.domain');
+} = require('./historiPenggunaan.domain');
 
 async function fetchPenggunaan() {
     const response = await Penggunaan.find({}).populate(['namaBarang', 'pengguna']);
