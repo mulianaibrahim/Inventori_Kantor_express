@@ -65,7 +65,7 @@ describe('tests/e2e/penggunaan.spec.js', () => {
                     tanggalMulaiPenggunaan: "2022-09-22",
                 })
                 .set('Authorization', token);
-            expect(penggunaan.statusCode).toBe(500);
+            expect(penggunaan.statusCode).toBe(400);
             expect(penggunaan.body.message).toBe('Barang tersebut sedang digunakan');
         });
     });
@@ -86,7 +86,7 @@ describe('tests/e2e/penggunaan.spec.js', () => {
                 .send({
                     kondisiPengembalian: null,
                 }).set('Authorization', token);
-            expect(penggunaan.statusCode).toBe(500);
+            expect(penggunaan.statusCode).toBe(400);
             expect(penggunaan.body.message).toBe('Kondisi pengembalian harus diisi!');
         });
     });

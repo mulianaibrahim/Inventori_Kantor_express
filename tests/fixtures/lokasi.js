@@ -16,6 +16,10 @@ const lokasis = [
     _id: '64871289c0c87723dd4a18f0',
     namaLokasi: 'lokasi4',
   },
+  {
+    _id: '64871289c0c88823dd4a18f0',
+    namaLokasi: 'lokasi40',
+  },
 ];
 async function insertLokasi() {
   await Lokasi.insertMany(lokasis);
@@ -25,6 +29,7 @@ async function deleteLokasi() {
 }
 
 module.exports = {
+  lokasis,
   insertLokasi,
   deleteLokasi,
 };

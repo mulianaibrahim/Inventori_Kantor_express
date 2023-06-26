@@ -1,3 +1,3 @@
 module.exports = {
-    roots: ['<rootDir>/src', '<rootDir>/tests'],
+    roots: ['<rootDir>/tests'],
   };

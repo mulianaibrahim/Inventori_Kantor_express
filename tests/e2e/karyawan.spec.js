@@ -60,7 +60,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
                     namaKaryawan: 'KARYAWAN 2',
                 })
                 .set('Authorization', token);
-            expect(karyawan.statusCode).toBe(500);
+            expect(karyawan.statusCode).toBe(400);
             expect(karyawan.body.message).toBe('Karyawan sudah ada');
         });
     });
@@ -98,7 +98,7 @@ describe('tests/e2e/karyawan.spec.js', () => {
                 .send({
                     namaKaryawan: 'KARYAWAN 2',
                 }).set('Authorization', token);
-            expect(karyawan.statusCode).toBe(500);
+            expect(karyawan.statusCode).toBe(400);
             expect(karyawan.body.message).toBe('Karyawan sudah ada');
         });
     });

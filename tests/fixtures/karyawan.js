@@ -25,6 +25,7 @@ async function deleteKaryawan() {
 }
 
 module.exports = {
+  karyawans,
   insertKaryawan,
   deleteKaryawan,
 };

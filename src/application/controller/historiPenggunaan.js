@@ -1,6 +1,6 @@
 const {
     fetchHistoriPenggunaan,
-} = require('../domain/historiPenggunaan/historiPenggunaan.domain');
+} = require('../domain/historiPenggunaan.domain');
 
 async function getAllHistoriPenggunaan(req, res) {
     const response = await fetchHistoriPenggunaan();

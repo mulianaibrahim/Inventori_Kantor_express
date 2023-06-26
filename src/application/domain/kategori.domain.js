@@ -1,21 +1,19 @@
-const Kategori = require('../../../model/kategori');
-const Barang = require('../../../model/barang');
+const Kategori = require('../../model/kategori');
+const Barang = require('../../model/barang')
 
-async function searchKategori(namaKategori){
-    const response = await Kategori.find({namaKategori: namaKategori});
-    try {
-        if(response.length < 1){
-            throw new Error();
-        }
+async function searchKategori(keyValue) {
+    const response = await Kategori.find(keyValue);
+    if (response.length !== 0) {
         return {
             status: 200,
             data: response,
         };
-    } catch (error) {
+    }else{
         return {
             status: 404,
-            message: 'Data kategori tidak ada!',
-        }
+            message: "Kategori tidak ditemukan",
+        };
+        
     }
 }
 
@@ -32,7 +30,7 @@ async function getKategori(id) {
         const response = await Kategori.findOne({
             _id: id
         });
-        if(!response){
+        if (!response) {
             throw new Error();
         }
         return {
@@ -48,21 +46,18 @@ async function getKategori(id) {
 }
 
 async function createKategori(dataKategori) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKategori.createdAt = currentTime;
-    dataKategori.updatedAt = currentTime;
-    const search = await searchKategori(dataKategori.namaKategori);
     try {
-        if(search.status === 200){
-            throw new Error('Kategori sudah ada');
+        const search = await searchKategori({
+            namaKategori: dataKategori.namaKategori
+        });
+        if (search.status === 200) {
+            return {
+                status: 400,
+                message: 'Kategori sudah ada',
+            };
         }
         await Kategori.create(dataKategori);
 
-        if (!Kategori) {
-            throw new Error("Gagal menambahkan kategori")
-        }
         return {
             status: 200,
             data: dataKategori,
@@ -70,26 +65,24 @@ async function createKategori(dataKategori) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal membuat kategori"
         };
     }
 }
 async function updateKategori(id, dataKategori) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKategori.updatedAt = currentTime;
-    const search = await searchKategori(dataKategori.namaKategori);
     try {
-        if(search.status === 200){
-            throw new Error('Kategori sudah ada');
+        const search = await searchKategori({
+            namaKategori: dataKategori.namaKategori
+        });
+        if (search.status === 200) {
+            return {
+                status: 400,
+                message: 'Kategori sudah ada',
+            };
         }
-        const update = await Kategori.updateOne({
+        await Kategori.updateOne({
             _id: id
         }, dataKategori);
-        if (!update) {
-            throw new Error('Gagal memperbarui kategori', );
-        }
         return {
             status: 200,
             data: dataKategori,
@@ -97,16 +90,16 @@ async function updateKategori(id, dataKategori) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal memperbarui kategori"
         };
     }
 }
 async function deleteKategori(id) {
     try {
-        const barang = await Barang.findOne({
+        const barang = await Barang.find({
             kategori: id
         });
-        if(!barang){
+        if (barang.length < 1) {
             await Kategori.deleteOne({
                 _id: id
             });
@@ -114,13 +107,16 @@ async function deleteKategori(id) {
                 status: 200,
                 message: 'Berhasil menghapus kategori'
             };
-        }else{
-            throw new Error(`Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`);
         }
+        return {
+            status: 400,
+            message: `Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`
+        }
+
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal menghapus kategori"
         };
     }
 }

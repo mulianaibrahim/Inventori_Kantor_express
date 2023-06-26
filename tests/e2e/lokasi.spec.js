@@ -59,7 +59,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
                     namaLokasi: 'LOKASI2',
                 })
                 .set('Authorization', token);
-            expect(lokasi.statusCode).toBe(500);
+            expect(lokasi.statusCode).toBe(400);
             expect(lokasi.body.message).toBe('Nama lokasi penyimpanan sudah ada');
         });
     });
@@ -100,7 +100,7 @@ describe('tests/e2e/lokasi.spec.js', () => {
                     namaLokasi: 'LOKASI2',
                 })
                 .set('Authorization', token);
-            expect(lokasi.statusCode).toBe(500);
+            expect(lokasi.statusCode).toBe(400);
             expect(lokasi.body.message).toBe('Nama lokasi penyimpanan sudah ada');
         });
     });

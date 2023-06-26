@@ -21,6 +21,7 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "64871282407585f33503200c",
+        penggunaSaatIni: null
     },
     {
         _id: '6486ef78dc1c04f730a2c1d2',
@@ -32,6 +33,7 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "64871282407585f33503200c",
+        penggunaSaatIni: null
     },
     {
         _id: '64871282407585f33503200c',
@@ -43,6 +45,7 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "64871282407585f33503200c",
+        penggunaSaatIni: null
     },
     {
         _id: '64871289c0c87723dd4a18f0',
@@ -54,6 +57,7 @@ const barangs = [{
         masaGuna: "12 BULAN",
         kondisi: "BAIK",
         lokasi: "64871282407585f33503200c",
+        penggunaSaatIni: null
     },
     {
         _id: '64871289c0c87723dd4a18f1',
@@ -85,6 +89,7 @@ async function updateBarang() {
 }
 
 module.exports = {
+    barangs,
     insertBarang,
     deleteBarang,
     updateBarang

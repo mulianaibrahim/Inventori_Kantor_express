@@ -4,7 +4,8 @@ const {
     createBarang,
     updateBarang,
     deleteBarang
-} = require('../domain/barang/barang.domain');
+} = require('../domain/barang.domain');
+const { gmt7 } = require('../domain/currentTime');
 
 async function getAllBarang(req, res) {
     const response = await fetchBarang();
@@ -24,6 +25,9 @@ async function addBarang(req, res) {
         masaGuna: req.body.masaGuna.toUpperCase(),
         kondisi: req.body.kondisi.toUpperCase(),
         lokasi: req.body.lokasi,
+        penggunaSaatIni: null,
+        createdAt: gmt7(),
+        updatedAt: gmt7()
     };
     const response = await createBarang(dataBarang);
     res.status(response.status).send(response);
@@ -38,6 +42,7 @@ async function updateOneBarang(req, res) {
         masaGuna: req.body.masaGuna.toUpperCase(),
         kondisi: req.body.kondisi.toUpperCase(),
         lokasi: req.body.lokasi,
+        updatedAt: gmt7()
     };
     const response = await updateBarang(id, dataBarang);
     res.status(response.status).send(response);

@@ -46,6 +46,7 @@ async function deletePenggunaan() {
 }
 
 module.exports = {
+    penggunaans,
     insertPenggunaan,
     deletePenggunaan,
 };

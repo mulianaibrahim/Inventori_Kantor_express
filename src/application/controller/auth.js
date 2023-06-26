@@ -1,7 +1,7 @@
 const {
     login,
     register
-} = require('../domain/auth/auth.domain');
+} = require('../domain/auth.domain');
 
 async function userRegister(req, res) {
     const body = req.body;

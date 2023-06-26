@@ -4,7 +4,8 @@ const {
     createKaryawan,
     updateKaryawan,
     deleteKaryawan
-} = require('../domain/karyawan/karyawan.domain');
+} = require('../domain/karyawan.domain');
+const { gmt7 } = require('../domain/currentTime');
 
 async function getAllKaryawan(req, res) {
     const response = await fetchKaryawan();
@@ -18,6 +19,8 @@ async function getOneKaryawan(req, res) {
 async function addKaryawan(req, res) {
     const dataKaryawan = {
         namaKaryawan: req.body.namaKaryawan.toUpperCase(),
+        createdAt: gmt7(),
+        updatedAt: gmt7(),
     };
     const response = await createKaryawan(dataKaryawan);
     res.status(response.status).send(response);
@@ -26,6 +29,7 @@ async function updateOneKaryawan(req, res) {
     const id = req.params.id;
     const dataKaryawan = {
         namaKaryawan: req.body.namaKaryawan.toUpperCase(),
+        updatedAt: gmt7(),
     };
     const response = await updateKaryawan(id, dataKaryawan);
     res.status(response.status).send(response);
