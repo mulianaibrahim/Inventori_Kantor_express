@@ -1,20 +1,20 @@
 const Kategori = require('../../model/kategori');
-const {
-    searchBarang
-} = require('./barang.domain');
+const Barang = require('../../model/barang')
 
 async function searchKategori(keyValue) {
     const response = await Kategori.find(keyValue);
-    if(response.length === 0){
+    if (response.length !== 0) {
+        return {
+            status: 200,
+            data: response,
+        };
+    }else{
         return {
             status: 404,
             message: "Kategori tidak ditemukan",
         };
+        
     }
-    return {
-        status: 200,
-        data: response,
-    };
 }
 
 async function fetchKategori() {
@@ -47,7 +47,9 @@ async function getKategori(id) {
 
 async function createKategori(dataKategori) {
     try {
-        const search = await searchKategori({namaKategori: dataKategori.namaKategori});
+        const search = await searchKategori({
+            namaKategori: dataKategori.namaKategori
+        });
         if (search.status === 200) {
             return {
                 status: 400,
@@ -69,7 +71,9 @@ async function createKategori(dataKategori) {
 }
 async function updateKategori(id, dataKategori) {
     try {
-        const search = await searchKategori({namaKategori: dataKategori.namaKategori});
+        const search = await searchKategori({
+            namaKategori: dataKategori.namaKategori
+        });
         if (search.status === 200) {
             return {
                 status: 400,
@@ -92,10 +96,10 @@ async function updateKategori(id, dataKategori) {
 }
 async function deleteKategori(id) {
     try {
-        const barang = await searchBarang({
+        const barang = await Barang.find({
             kategori: id
         });
-        if(barang.status === 404){
+        if (barang.length < 1) {
             await Kategori.deleteOne({
                 _id: id
             });
@@ -103,12 +107,12 @@ async function deleteKategori(id) {
                 status: 200,
                 message: 'Berhasil menghapus kategori'
             };
-        }else{
-            return {
-                status: 400,
-                message: `Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`
-            }
         }
+        return {
+            status: 400,
+            message: `Tidak dapat di hapus. Kategori ini terhubung dengan ${barang.namaBarang} !`
+        }
+
     } catch (error) {
         return {
             status: 500,

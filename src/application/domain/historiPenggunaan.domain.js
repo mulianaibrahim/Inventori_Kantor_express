@@ -1,4 +1,5 @@
 const HistoriPenggunaan = require('../../model/historiPenggunaan');
+const { gmt7 } = require('../domain/currentTime');
 
 async function fetchHistoriPenggunaan() {
     const response = await HistoriPenggunaan.find({});
@@ -9,11 +10,8 @@ async function fetchHistoriPenggunaan() {
 }
 
 async function createHistoriPenggunaan(dataHistoriPenggunaan) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataHistoriPenggunaan.createdAt = currentTime;
     try {
+        dataHistoriPenggunaan.createdAt = gmt7();
         await HistoriPenggunaan.create(dataHistoriPenggunaan);
         return {
             status: 200,

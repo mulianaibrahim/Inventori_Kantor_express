@@ -1,21 +1,18 @@
 const Lokasi = require('../../model/lokasi');
 const Barang = require('../../model/barang');
 
-async function searchLokasi(namaLokasi){
-    const response = await Lokasi.find({namaLokasi: namaLokasi});
-    try {
-        if(response.length < 1){
-            throw new Error();
-        }
-        return {
-            status: 200,
-            data: response,
-        };
-    } catch (error) {
+async function searchLokasi(keyValue) {
+    const response = await Lokasi.find(keyValue);
+    if (response.length < 1) {
         return {
             status: 404,
             message: 'Data lokasi penyimpanan tidak ada!',
         }
+    } else {
+        return {
+            status: 200,
+            data: response,
+        };
     }
 }
 
@@ -32,7 +29,7 @@ async function getLokasi(id) {
         const response = await Lokasi.findOne({
             _id: id
         });
-        if(!response){
+        if (!response) {
             throw new Error();
         }
         return {
@@ -48,20 +45,17 @@ async function getLokasi(id) {
 }
 
 async function createLokasi(dataLokasi) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataLokasi.createdAt = currentTime;
-    dataLokasi.updatedAt = currentTime;
-    const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
-        if(search.status === 200){
-            throw new Error('Nama lokasi penyimpanan sudah ada');
+        const search = await searchLokasi({
+            namaLokasi: dataLokasi.namaLokasi
+        });
+        if (search.status === 200) {
+            return {
+                status: 400,
+                message: 'Nama lokasi penyimpanan sudah ada'
+            };
         }
         await Lokasi.create(dataLokasi);
-        if (!Lokasi) {
-            throw new Error("Gagal menambahkan lokasi penyimpanan")
-        }
         return {
             status: 200,
             data: dataLokasi,
@@ -69,26 +63,24 @@ async function createLokasi(dataLokasi) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal menambahkan lokasi penyimpanan"
         };
     }
 }
 async function updateLokasi(id, dataLokasi) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataLokasi.updatedAt = currentTime;
-    const search = await searchLokasi(dataLokasi.namaLokasi);
     try {
-        if(search.status === 200){
-            throw new Error('Nama lokasi penyimpanan sudah ada');
+        const search = await searchLokasi({
+            namaLokasi: dataLokasi.namaLokasi
+        });
+        if (search.status === 200) {
+            return {
+                status: 400,
+                message: 'Nama lokasi penyimpanan sudah ada'
+            };
         }
-        const update = await Lokasi.updateOne({
+        await Lokasi.updateOne({
             _id: id
         }, dataLokasi);
-        if (!update) {
-            throw new Error('Gagal memperbarui lokasi penyimpanan', );
-        }
         return {
             status: 200,
             data: dataLokasi,
@@ -96,16 +88,16 @@ async function updateLokasi(id, dataLokasi) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: 'Gagal memperbarui lokasi penyimpanan'
         };
     }
 }
 async function deleteLokasi(id) {
     try {
-        const barang = await Barang.findOne({
+        const barang = await Barang.find({
             lokasi: id
         });
-        if(!barang){
+        if (barang.length === 0) {
             await Lokasi.deleteOne({
                 _id: id
             });
@@ -113,13 +105,16 @@ async function deleteLokasi(id) {
                 status: 200,
                 message: 'Berhasil menghapus lokasi penyimpanan'
             };
-        }else{
-            throw new Error(`Tidak dapat di hapus. ${barang.namaBarang} sedang disimpan di tempat penyimpanan ini.`);
         }
+        return {
+            status: 400,
+            message: `Tidak dapat di hapus. Ada barang yang disimpan ditempat penyimpanan ini!`
+        }
+
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal menghapus lokasi penyimpanan!"
         };
     }
 }

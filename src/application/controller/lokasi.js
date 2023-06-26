@@ -5,6 +5,7 @@ const {
     updateLokasi,
     deleteLokasi
 } = require('../domain/lokasi.domain');
+const { gmt7 } = require('../domain/currentTime')
 
 async function getAllLokasi(req, res) {
     const response = await fetchLokasi();
@@ -18,6 +19,8 @@ async function getOneLokasi(req, res) {
 async function addLokasi(req, res) {
     const dataLokasi = {
         namaLokasi: req.body.namaLokasi.toUpperCase(),
+        createdAt: gmt7(),
+        updatedAt: gmt7(),
     };
     const response = await createLokasi(dataLokasi);
     res.status(response.status).send(response);
@@ -26,6 +29,7 @@ async function updateOneLokasi(req, res) {
     const id = req.params.id;
     const dataLokasi = {
         namaLokasi: req.body.namaLokasi.toUpperCase(),
+        updatedAt: gmt7(),
     };
     const response = await updateLokasi(id, dataLokasi);
     res.status(response.status).send(response);

@@ -1,22 +1,18 @@
 const Karyawan = require('../../model/karyawan');
 const Barang = require('../../model/barang');
 
-async function searchKaryawan(namaKaryawan){
-    const response = await Karyawan.find({namaKaryawan: namaKaryawan});
-    try {
+async function searchKaryawan(keyValue){
+    const response = await Karyawan.find(keyValue);
         if(response.length < 1){
-            throw new Error();
+            return {
+                status: 404,
+                message: 'Data karyawan tidak ada!',
+            }
         }
         return {
             status: 200,
             data: response,
         };
-    } catch (error) {
-        return {
-            status: 404,
-            message: 'Data karyawan tidak ada!',
-        }
-    }
 }
 
 async function fetchKaryawan() {
@@ -48,20 +44,15 @@ async function getKaryawan(id) {
 }
 
 async function createKaryawan(dataKaryawan) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKaryawan.createdAt = currentTime;
-    dataKaryawan.updatedAt = currentTime;
-    const search = await searchKaryawan(dataKaryawan.namaKaryawan);
+    const search = await searchKaryawan({namaKaryawan: dataKaryawan.namaKaryawan});
     try {
         if(search.status === 200){
-            throw new Error('Karyawan sudah ada');
+            return {
+                status: 400,
+                message: 'Karyawan sudah ada',
+            };
         }
         await Karyawan.create(dataKaryawan);
-        if (!Karyawan) {
-            throw new Error("Gagal menambahkan karyawan")
-        }
         return {
             status: 200,
             data: dataKaryawan,
@@ -69,26 +60,22 @@ async function createKaryawan(dataKaryawan) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal menambahkan karyawan"
         };
     }
 }
 async function updateKaryawan(id, dataKaryawan) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataKaryawan.updatedAt = currentTime;
-    const search = await searchKaryawan(dataKaryawan.namaKaryawan);
     try {
+        const search = await searchKaryawan({namaKaryawan: dataKaryawan.namaKaryawan});
         if(search.status === 200){
-            throw new Error('Karyawan sudah ada');
+            return {
+                status: 400,
+                message: 'Karyawan sudah ada',
+            };
         }
-        const update = await Karyawan.updateOne({
+        await Karyawan.updateOne({
             _id: id
         }, dataKaryawan);
-        if (!update) {
-            throw new Error('Gagal memperbarui karyawan', );
-        }
         return {
             status: 200,
             data: dataKaryawan,
@@ -96,16 +83,16 @@ async function updateKaryawan(id, dataKaryawan) {
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: 'Gagal memperbarui karyawan'
         };
     }
 }
 async function deleteKaryawan(id) {
     try {
-        const barang = await Barang.findOne({
+        const barang = await Barang.find({
             penggunaSaatIni: id
         });
-        if(!barang){
+        if(barang.length < 1){
             await Karyawan.deleteOne({
                 _id: id
             });
@@ -114,13 +101,16 @@ async function deleteKaryawan(id) {
                 message: 'Berhasil menghapus karyawan'
             };
         }else{
-            throw new Error(`Tidak dapat menghapus karyawan. Karywan tersebut sedang menggunakan barang ${barang.namaBarang}`)
+            return {
+                status: 400,
+                message: `Tidak dapat menghapus karyawan. Karywan tersebut sedang menggunakan barang ${barang.namaBarang}`
+            };
         }
         
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Gagal menghapus karyawan"
         };
     }
 }
@@ -131,4 +121,5 @@ module.exports = {
     createKaryawan,
     updateKaryawan,
     deleteKaryawan,
+    searchKaryawan
 };

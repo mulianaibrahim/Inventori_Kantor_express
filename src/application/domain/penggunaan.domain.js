@@ -1,8 +1,5 @@
 const Penggunaan = require('../../model/penggunaan');
-const {
-    getBarang,
-    updateBarang
-} = require('./barang.domain');
+const Barang = require('../../model/barang');
 
 const {
     createHistoriPenggunaan
@@ -28,67 +25,108 @@ async function fetchPenggunaan() {
 }
 
 async function createPenggunaan(dataPenggunaan) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    dataPenggunaan.statusPenggunaan = "BERLANGSUNG";
-    dataPenggunaan.createdAt = currentTime;
-    const searchBarang = await getBarang(dataPenggunaan.namaBarang);
     try {
-        if (searchBarang.status === 200 && searchBarang.data[0].penggunaSaatIni === null) {
-            dataPenggunaan.kondisiAwal = searchBarang.data[0].kondisi;
-            await Penggunaan.create(dataPenggunaan);
-            await updateBarang(dataPenggunaan.namaBarang, { penggunaSaatIni: dataPenggunaan.pengguna });
-            if (!Penggunaan) {
-                throw new Error("Gagal menambahkan")
-            }
+        const currentTime = new Date();
+        const offset = 420;
+        currentTime.setMinutes(currentTime.getMinutes() + offset);
+        dataPenggunaan.statusPenggunaan = "BERLANGSUNG";
+        dataPenggunaan.createdAt = currentTime;
+        const searchBarang = await Barang.findOne({
+            _id: dataPenggunaan.namaBarang
+        });
+        dataPenggunaan.kondisiAwal = searchBarang.kondisi;
+        if (searchBarang.penggunaSaatIni !== null) {
             return {
-                status: 200,
-                data: dataPenggunaan,
+                status: 400,
+                message: "Barang tersebut sedang digunakan",
             };
         } else {
-            throw new Error("Barang tersebut sedang digunakan");
+            const barangUpdate = await Barang.updateOne({
+                _id: dataPenggunaan.namaBarang
+            }, {
+                penggunaSaatIni: dataPenggunaan.pengguna
+            }, {
+                returnNewDocument: true
+            });
+            if (barangUpdate.modifiedCount === 1) {
+                const buatPenggunaan = await Penggunaan.create(dataPenggunaan);
+                if (!buatPenggunaan) {
+                    await Barang.updateOne({
+                        _id: dataPenggunaan.namaBarang
+                    }, {
+                        penggunaSaatIni: null
+                    }, {
+                        returnNewDocument: true
+                    });
+                    throw new Error();
+                } else {
+                    return {
+                        status: 200,
+                        data: dataPenggunaan,
+                    };
+
+                }
+            } else {
+                return {
+                    status: 400,
+                    message: "Gagal memperbarui data penggunaSaatIni pada collection barang",
+                };
+            }
         }
 
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Aksi gagal dilakukan"
         };
     }
 }
 
 async function selesaikanPenggunaan(id, dataPenggunaan) {
-    const currentTime = new Date();
-    const offset = 420;
-    currentTime.setMinutes(currentTime.getMinutes() + offset);
-    const pengguna = await Penggunaan.findById(id);
-    const barang = await getBarang(pengguna.namaBarang);
     try {
-        if(dataPenggunaan.kondisiPengembalian !== null){
+        const currentTime = new Date();
+        const offset = 420;
+        currentTime.setMinutes(currentTime.getMinutes() + offset);
+        if (dataPenggunaan.kondisiPengembalian !== null) {
+            const pengguna = await Penggunaan.findById(id);
+            const barang = await Barang.findOne({
+                _id: pengguna.namaBarang
+            });
             const kondisiKembali = dataPenggunaan.kondisiPengembalian.toUpperCase();
             const histori = {
-                namaBarang: barang.data[0].namaBarang,
-                pengguna: barang.data[0].penggunaSaatIni,
+                namaBarang: barang.namaBarang,
+                pengguna: barang.penggunaSaatIni,
                 tanggalMulaiPenggunaan: pengguna.tanggalMulaiPenggunaan,
                 tanggalSelesaiPenggunaan: currentTime,
-                kondisiAwal: barang.data[0].kondisi,
+                kondisiAwal: barang.kondisi,
                 kondisiPengembalian: kondisiKembali
             };
             createHistoriPenggunaan(histori);
-            await updateBarang(barang.data[0]._id, { penggunaSaatIni: null, kondisi: kondisiKembali});
-            await Penggunaan.deleteOne({_id: id});
+            await Barang.updateOne({
+                _id: barang._id
+            }, {
+                penggunaSaatIni: null,
+                kondisi: kondisiKembali
+            }, {
+                returnNewDocument: true
+            });
+            await Penggunaan.deleteOne({
+                _id: id
+            });
             return {
                 status: 200,
                 data: dataPenggunaan,
             };
-        }else{
-            throw new Error('Kondisi pengembalian harus diisi!');
+        } else {
+            return {
+                status: 400,
+                message: 'Kondisi pengembalian harus diisi!'
+            };
         }
     } catch (error) {
         return {
             status: 500,
-            message: error.message
+            message: "Aksi gagal dilakukan!"
         };
     }
 }

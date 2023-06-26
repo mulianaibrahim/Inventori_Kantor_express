@@ -5,7 +5,7 @@ const {
     updateKategori,
     deleteKategori
 } = require('../domain/kategori.domain');
-const { gmt7 } = require('../domain/currentTime')
+const { gmt7 } = require('../domain/currentTime');
 
 async function getAllKategori(req, res) {
     const response = await fetchKategori();
